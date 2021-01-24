@@ -25,9 +25,9 @@ const Register = () => {
     >
       <Box
         width='full'
-        maxWidth={{ base: '90%', md: '30%' }}
+        maxWidth={{ base: '90%', md: '40%' }}
         border={{ base: 'none', md: '1px solid' }}
-        borderRadius='4%'
+        borderRadius='2xl'
         px={{ base: 4, md: 16 }}
         py={{ base: 14, md: 20 }}
       >
