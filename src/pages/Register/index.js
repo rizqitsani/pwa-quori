@@ -21,15 +21,15 @@ const Register = () => {
       width='100%'
       alignItems='center'
       justifyContent='center'
-      p={20}
+      p={{ base: 0, md: 20 }}
     >
       <Box
         width='full'
-        maxWidth='40%'
-        border='1px solid'
+        maxWidth={{ base: '90%', md: '30%' }}
+        border={{ base: 'none', md: '1px solid' }}
         borderRadius='4%'
-        px={16}
-        py={20}
+        px={{ base: 4, md: 16 }}
+        py={{ base: 14, md: 20 }}
       >
         <Heading fontSize='3xl' mb={16}>
           Join millions of developer sharing their knowledge!
