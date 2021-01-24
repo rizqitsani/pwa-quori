@@ -4,6 +4,8 @@ import { Box, Link, Stack, Text } from '@chakra-ui/react';
 
 import { Link as RouterLink } from 'react-router-dom';
 
+import ColorModeSwitcher from './ColorModeSwitcher';
+
 const MenuItem = ({ children, isLast, to = '/', ...rest }) => {
   return (
     <Link as={RouterLink} to={to}>
@@ -29,6 +31,7 @@ const MenuLinks = ({ isOpen }) => {
       >
         <MenuItem to='/login'>Login</MenuItem>
         <MenuItem to='/register'>Register</MenuItem>
+        <ColorModeSwitcher />
       </Stack>
     </Box>
   );
