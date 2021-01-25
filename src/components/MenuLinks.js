@@ -5,6 +5,7 @@ import { Box, Link, Stack, Text } from '@chakra-ui/react';
 import { Link as RouterLink } from 'react-router-dom';
 
 import ColorModeSwitcher from './ColorModeSwitcher';
+import AddThreadModal from './AddThreadModal';
 
 const MenuItem = ({ children, isLast, to = '/', ...rest }) => {
   return (
@@ -16,10 +17,10 @@ const MenuItem = ({ children, isLast, to = '/', ...rest }) => {
   );
 };
 
-const MenuLinks = ({ isOpen }) => {
+const MenuLinks = ({ isOpenMobile }) => {
   return (
     <Box
-      display={{ base: isOpen ? 'block' : 'none', md: 'block' }}
+      display={{ base: isOpenMobile ? 'block' : 'none', md: 'block' }}
       flexBasis={{ base: '100%', md: 'auto' }}
     >
       <Stack
@@ -29,9 +30,8 @@ const MenuLinks = ({ isOpen }) => {
         direction={['column', 'row', 'row', 'row']}
         pt={[4, 4, 0, 0]}
       >
-        <MenuItem to='/threads'>Threads</MenuItem>
-        <MenuItem to='/login'>Login</MenuItem>
-        <MenuItem to='/register'>Register</MenuItem>
+        <MenuItem to='/mythreads'>My Threads</MenuItem>
+        <AddThreadModal />
         <ColorModeSwitcher />
       </Stack>
     </Box>

@@ -17,7 +17,7 @@ const Navbar = (props) => {
         color={['orange.900', 'orange.900', 'orange.500', 'orange.500']}
       />
       <MenuToggle toggle={toggle} isOpen={isOpen} />
-      <MenuLinks isOpen={isOpen} />
+      <MenuLinks isOpenMobile={isOpen} />
     </NavbarContainer>
   );
 };

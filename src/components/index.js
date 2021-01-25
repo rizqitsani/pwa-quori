@@ -1,3 +1,4 @@
+import AddThreadModal from './AddThreadModal';
 import AnswerCard from './AnswerCard';
 import CategoriesLabel from './CategoriesLabel';
 import CategoriesList from './CategoriesList';
@@ -12,6 +13,7 @@ import NavbarContainer from './NavbarContainer';
 import ThreadCard from './ThreadCard';
 
 export {
+  AddThreadModal,
   AnswerCard,
   CategoriesLabel,
   CategoriesList,
