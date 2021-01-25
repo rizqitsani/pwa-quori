@@ -3,7 +3,6 @@ import React from 'react';
 import { Grid, GridItem, Heading, Stack, Text } from '@chakra-ui/react';
 
 import {
-  AnswerCard,
   CategoriesList,
   MainContainer,
   Navbar,
@@ -23,15 +22,10 @@ const Home = () => {
             <CategoriesList />
           </GridItem>
           <GridItem colSpan={{ base: 5, md: 3 }}>
-            <Heading>#I'm curious about</Heading>
+            <Heading>#Threads</Heading>
             <Stack spacing={8} my={8}>
               <ThreadCard />
               <ThreadCard />
-            </Stack>
-            <Heading>#My Thoughts</Heading>
-            <Stack spacing={8} my={8}>
-              <AnswerCard />
-              <AnswerCard />
             </Stack>
           </GridItem>
           <GridItem colSpan={1} />

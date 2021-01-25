@@ -3,13 +3,14 @@ import React from 'react';
 import { Grid, GridItem, Heading, Stack, Text } from '@chakra-ui/react';
 
 import {
+  AnswerCard,
   CategoriesList,
   MainContainer,
   Navbar,
   ThreadCard,
 } from '../../components';
 
-const Threads = () => {
+const MyThreads = () => {
   return (
     <>
       <Navbar />
@@ -22,10 +23,15 @@ const Threads = () => {
             <CategoriesList />
           </GridItem>
           <GridItem colSpan={{ base: 5, md: 3 }}>
-            <Heading>#Threads</Heading>
+            <Heading>#I'm curious about</Heading>
             <Stack spacing={8} my={8}>
               <ThreadCard />
               <ThreadCard />
+            </Stack>
+            <Heading>#My Thoughts</Heading>
+            <Stack spacing={8} my={8}>
+              <AnswerCard />
+              <AnswerCard />
             </Stack>
           </GridItem>
           <GridItem colSpan={1} />
@@ -35,4 +41,4 @@ const Threads = () => {
   );
 };
 
-export default Threads;
+export default MyThreads;
