@@ -8,12 +8,13 @@ import {
   Text,
   useColorModeValue,
 } from '@chakra-ui/react';
+import CategoriesLabel from './CategoriesLabel';
 
-const ThreadCard = () => {
+const ThreadCard = ({ categories }) => {
   const cardBg = useColorModeValue('gray.100', 'gray.700');
 
   return (
-    <Box bg={cardBg} borderRadius='md' p={10} my='8' shadow='base'>
+    <Box bg={cardBg} borderRadius='md' p={10} shadow='base'>
       <Flex align='center' mb={4}>
         <Avatar
           name='Muhammad Rizqi Tsani'
@@ -27,6 +28,7 @@ const ThreadCard = () => {
           <Text fontSize='xs'>1 hour ago</Text>
         </Flex>
       </Flex>
+      <CategoriesLabel categories={categories} />
       <Heading fontSize='2xl' mb={4}>
         Thread #2
       </Heading>

@@ -9,7 +9,27 @@ import {
   ThreadCard,
 } from '../../components';
 
-const Threads = () => {
+const Categories = (props) => {
+  let title = '';
+
+  switch (props.match.params.name) {
+    case 'web-development':
+      title = 'Web Development';
+      break;
+    case 'android-development':
+      title = 'Android Development';
+      break;
+    case 'front-end':
+      title = 'Front End';
+      break;
+    case 'back-end':
+      title = 'Back End';
+      break;
+    default:
+      title = '';
+      break;
+  }
+
   return (
     <>
       <Navbar />
@@ -22,9 +42,16 @@ const Threads = () => {
             <CategoriesList />
           </GridItem>
           <GridItem colSpan={{ base: 5, md: 3 }}>
-            <Heading>#Threads</Heading>
+            <Heading>{`#${title}`}</Heading>
             <Stack spacing={8} my={8}>
-              <ThreadCard />
+              <ThreadCard
+                categories={[
+                  'Web Development',
+                  'Android Development',
+                  'Front End',
+                  'Back End',
+                ]}
+              />
               <ThreadCard />
             </Stack>
           </GridItem>
@@ -35,4 +62,4 @@ const Threads = () => {
   );
 };
 
-export default Threads;
+export default Categories;
