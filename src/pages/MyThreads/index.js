@@ -3,7 +3,7 @@ import React from 'react';
 import { Grid, GridItem, Heading, Stack, Text } from '@chakra-ui/react';
 
 import {
-  AnswerCard,
+  MyAnswerCard,
   CategoriesList,
   MainContainer,
   Navbar,
@@ -30,8 +30,8 @@ const MyThreads = () => {
             </Stack>
             <Heading>#My Thoughts</Heading>
             <Stack spacing={8} my={8}>
-              <AnswerCard />
-              <AnswerCard />
+              <MyAnswerCard />
+              <MyAnswerCard />
             </Stack>
           </GridItem>
           <GridItem colSpan={1} />

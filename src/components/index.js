@@ -8,6 +8,7 @@ import Logo from './Logo';
 import MainContainer from './MainContainer';
 import MenuLinks from './MenuLinks';
 import MenuToggle from './MenuToggle';
+import MyAnswerCard from './MyAnswerCard';
 import Navbar from './Navbar';
 import NavbarContainer from './NavbarContainer';
 import ThreadCard from './ThreadCard';
@@ -23,6 +24,7 @@ export {
   MainContainer,
   MenuLinks,
   MenuToggle,
+  MyAnswerCard,
   Navbar,
   NavbarContainer,
   ThreadCard,

@@ -1,44 +1,15 @@
 import React from 'react';
 
-import {
-  Avatar,
-  Box,
-  Flex,
-  IconButton,
-  Text,
-  useColorModeValue,
-} from '@chakra-ui/react';
-import { MdDelete, MdModeEdit } from 'react-icons/md';
+import { Box, Heading, Text, useColorModeValue } from '@chakra-ui/react';
 
-const AnswerCard = () => {
+const MyAnswerCard = ({ categories }) => {
   const cardBg = useColorModeValue('gray.100', 'gray.700');
 
   return (
     <Box bg={cardBg} borderRadius='md' p={10} shadow='base'>
-      <Flex direction={{ base: 'column', md: 'row' }} justify='space-between'>
-        <Flex align='center' mb={4}>
-          <Avatar
-            name='Muhammad Rizqi Tsani'
-            src='https://bit.ly/ryan-florence'
-            mr={4}
-          />
-          <Flex direction='column'>
-            <Text fontSize='xs' fontWeight='bold'>
-              Muhammad Rizqi Tsani
-            </Text>
-            <Text fontSize='xs'>1 hour ago</Text>
-          </Flex>
-        </Flex>
-        <Box>
-          <IconButton
-            variant='outline'
-            colorScheme='green'
-            icon={<MdModeEdit />}
-            mr={2}
-          />
-          <IconButton variant='outline' colorScheme='red' icon={<MdDelete />} />
-        </Box>
-      </Flex>
+      <Heading fontSize='2xl' mb={4}>
+        Thread #2
+      </Heading>
       <Text>
         Lorem ipsum, dolor sit amet consectetur adipisicing elit. Dolor
         voluptate voluptatibus esse amet modi itaque dicta quasi soluta,
@@ -57,4 +28,4 @@ const AnswerCard = () => {
   );
 };
 
-export default AnswerCard;
+export default MyAnswerCard;

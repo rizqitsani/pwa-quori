@@ -2,7 +2,14 @@ import React from 'react';
 
 import { BrowserRouter as Router, Switch, Route } from 'react-router-dom';
 
-import { Categories, Home, Login, MyThreads, Register } from '../pages';
+import {
+  Categories,
+  Home,
+  Login,
+  MyThreads,
+  Register,
+  ThreadDetails,
+} from '../pages';
 
 const Routes = () => {
   return (
@@ -13,6 +20,7 @@ const Routes = () => {
         <Route exact path='/register' component={Register} />
         <Route exact path='/mythreads' component={MyThreads} />
         <Route exact path='/categories/:name' component={Categories} />
+        <Route exact path='/thread/:id' component={ThreadDetails} />
       </Switch>
     </Router>
   );
