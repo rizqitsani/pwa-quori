@@ -1,32 +1,43 @@
 import React from 'react';
 
-import { Box, Text, Link, VStack, Code, Grid } from '@chakra-ui/react';
+import { Grid, GridItem, Heading, Stack, Text } from '@chakra-ui/react';
 
-import { ColorModeSwitcher } from '../../components';
-import { Logo } from './Logo';
+import {
+  AnswerCard,
+  CategoriesList,
+  MainContainer,
+  Navbar,
+  ThreadCard,
+} from '../../components';
 
 const Home = () => {
   return (
-    <Box textAlign='center' fontSize='xl'>
-      <Grid minH='100vh' p={3}>
-        <ColorModeSwitcher justifySelf='flex-end' />
-        <VStack spacing={8}>
-          <Logo h='40vmin' pointerEvents='none' />
-          <Text>
-            Edit <Code fontSize='xl'>src/App.js</Code> and save to reload.
-          </Text>
-          <Link
-            color='teal.500'
-            href='https://chakra-ui.com'
-            fontSize='2xl'
-            target='_blank'
-            rel='noopener noreferrer'
-          >
-            Learn Chakra
-          </Link>
-        </VStack>
-      </Grid>
-    </Box>
+    <>
+      <Navbar />
+      <MainContainer>
+        <Grid h='200px' templateColumns='repeat(5, 1fr)' gap={4}>
+          <GridItem colSpan={{ base: 5, md: 1 }}>
+            <Text fontWeight='bold' mb={4}>
+              Categories
+            </Text>
+            <CategoriesList />
+          </GridItem>
+          <GridItem colSpan={{ base: 5, md: 3 }}>
+            <Heading>#I'm curious about</Heading>
+            <Stack spacing={8} my={8}>
+              <ThreadCard />
+              <ThreadCard />
+            </Stack>
+            <Heading>#My Thoughts</Heading>
+            <Stack spacing={8} my={8}>
+              <AnswerCard />
+              <AnswerCard />
+            </Stack>
+          </GridItem>
+          <GridItem colSpan={1} />
+        </Grid>
+      </MainContainer>
+    </>
   );
 };
 

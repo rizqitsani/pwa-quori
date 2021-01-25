@@ -1,12 +1,16 @@
 import React from 'react';
 
-import { Box, Text } from '@chakra-ui/react';
+import { Box, Link, Text } from '@chakra-ui/react';
+
+import { Link as RouterLink } from 'react-router-dom';
 
 const Logo = (props) => {
   return (
     <Box {...props}>
       <Text fontSize='lg' fontWeight='bold'>
-        Quori
+        <Link as={RouterLink} to='/'>
+          Quori
+        </Link>
       </Text>
     </Box>
   );

@@ -1,3 +1,4 @@
+import AnswerCard from './AnswerCard';
 import CategoriesLabel from './CategoriesLabel';
 import CategoriesList from './CategoriesList';
 import CategoriesTag from './CategoriesTag';
@@ -11,6 +12,7 @@ import NavbarContainer from './NavbarContainer';
 import ThreadCard from './ThreadCard';
 
 export {
+  AnswerCard,
   CategoriesLabel,
   CategoriesList,
   CategoriesTag,

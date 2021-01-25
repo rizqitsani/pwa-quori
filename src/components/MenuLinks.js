@@ -29,6 +29,7 @@ const MenuLinks = ({ isOpen }) => {
         direction={['column', 'row', 'row', 'row']}
         pt={[4, 4, 0, 0]}
       >
+        <MenuItem to='/threads'>Threads</MenuItem>
         <MenuItem to='/login'>Login</MenuItem>
         <MenuItem to='/register'>Register</MenuItem>
         <ColorModeSwitcher />
