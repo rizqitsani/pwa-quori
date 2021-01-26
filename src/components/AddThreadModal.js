@@ -13,6 +13,7 @@ import {
   ModalFooter,
   ModalHeader,
   ModalOverlay,
+  Select,
   useDisclosure,
 } from '@chakra-ui/react';
 import { MdAdd } from 'react-icons/md';
@@ -31,7 +32,7 @@ const AddThreadModal = () => {
   const initRef = useRef();
 
   const { register, handleSubmit, formState, errors } = useForm({
-    mode: 'onSubmit',
+    mode: 'onBlur',
     resolver: yupResolver(schema),
   });
 
@@ -65,7 +66,7 @@ const AddThreadModal = () => {
             <ModalHeader>Ask a Question</ModalHeader>
             <ModalCloseButton />
             <ModalBody my={2}>
-              <FormControl isInvalid={!!errors?.title?.message}>
+              <FormControl isInvalid={!!errors?.title?.message} mb={4}>
                 <FormLabel mb={4}>You're asking about...</FormLabel>
                 <Input
                   type='text'
@@ -77,6 +78,22 @@ const AddThreadModal = () => {
                   }}
                 />
                 <FormErrorMessage>{errors?.title?.message}</FormErrorMessage>
+              </FormControl>
+              <FormControl isInvalid={!!errors?.category?.message}>
+                <Select
+                  name='category'
+                  ref={register}
+                  placeholder='Select a category...'
+                >
+                  <option value='Web Development'>Web Development</option>
+                  <option value='Android Development'>
+                    Android Development
+                  </option>
+                  <option value='Front End'>Front End</option>
+                  <option value='Back End'>Back End</option>
+                  <option value='Other'>Other</option>
+                </Select>
+                <FormErrorMessage>{errors?.category?.message}</FormErrorMessage>
               </FormControl>
             </ModalBody>
             <ModalFooter>
