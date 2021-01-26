@@ -2,9 +2,9 @@ import React from 'react';
 
 import { HStack, Tag } from '@chakra-ui/react';
 
-const CategoriesLabel = ({ categories }) => {
+const CategoriesLabel = ({ categories, ...props }) => {
   return (
-    <HStack mt={1} mb={3} wrap='wrap'>
+    <HStack mt={1} mb={3} wrap='wrap' {...props}>
       {categories?.map((c) => {
         let color = '';
         switch (c) {

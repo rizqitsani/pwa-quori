@@ -6,8 +6,8 @@ import {
   MyAnswerCard,
   CategoriesList,
   MainContainer,
+  MyQuestionCard,
   Navbar,
-  ThreadCard,
 } from '../../components';
 
 const MyThreads = () => {
@@ -25,8 +25,10 @@ const MyThreads = () => {
           <GridItem colSpan={{ base: 5, md: 3 }}>
             <Heading>#I'm curious about</Heading>
             <Stack spacing={8} my={8}>
-              <ThreadCard />
-              <ThreadCard />
+              <MyQuestionCard
+                categories={['Front End', 'Android Development']}
+              />
+              <MyQuestionCard />
             </Stack>
             <Heading>#My Thoughts</Heading>
             <Stack spacing={8} my={8}>

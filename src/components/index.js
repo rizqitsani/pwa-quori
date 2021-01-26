@@ -9,6 +9,7 @@ import MainContainer from './MainContainer';
 import MenuLinks from './MenuLinks';
 import MenuToggle from './MenuToggle';
 import MyAnswerCard from './MyAnswerCard';
+import MyQuestionCard from './MyQuestionCard';
 import Navbar from './Navbar';
 import NavbarContainer from './NavbarContainer';
 import ThreadCard from './ThreadCard';
@@ -25,6 +26,7 @@ export {
   MenuLinks,
   MenuToggle,
   MyAnswerCard,
+  MyQuestionCard,
   Navbar,
   NavbarContainer,
   ThreadCard,
