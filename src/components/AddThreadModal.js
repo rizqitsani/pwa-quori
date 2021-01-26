@@ -3,6 +3,7 @@ import React, { useRef } from 'react';
 import {
   Button,
   FormControl,
+  FormErrorMessage,
   FormLabel,
   Input,
   Modal,
@@ -16,10 +17,32 @@ import {
 } from '@chakra-ui/react';
 import { MdAdd } from 'react-icons/md';
 
+import { useForm } from 'react-hook-form';
+import { yupResolver } from '@hookform/resolvers/yup';
+import * as yup from 'yup';
+
+const schema = yup.object().shape({
+  title: yup.string().required('This field is required'),
+});
+
 const AddThreadModal = () => {
   const { isOpen, onOpen, onClose } = useDisclosure();
 
   const initRef = useRef();
+
+  const { register, handleSubmit, formState, errors } = useForm({
+    mode: 'onSubmit',
+    resolver: yupResolver(schema),
+  });
+
+  const onSubmit = (data) => {
+    return new Promise((resolve) => {
+      setTimeout(() => {
+        alert(JSON.stringify(data));
+        resolve();
+      }, 3000);
+    });
+  };
 
   return (
     <>
@@ -37,25 +60,36 @@ const AddThreadModal = () => {
         initialFocusRef={initRef}
       >
         <ModalOverlay />
-        <form>
+        <form onSubmit={handleSubmit(onSubmit)}>
           <ModalContent px={4} py={8}>
             <ModalHeader>Ask a Question</ModalHeader>
             <ModalCloseButton />
             <ModalBody my={2}>
-              <FormControl name='title'>
+              <FormControl isInvalid={!!errors?.title?.message}>
                 <FormLabel mb={4}>You're asking about...</FormLabel>
                 <Input
                   type='text'
+                  name='title'
                   placeholder='Start it with "What", "Why", "How", etc.'
-                  ref={initRef}
+                  ref={(e) => {
+                    register(e);
+                    initRef.current = e; // you can still assign to ref
+                  }}
                 />
+                <FormErrorMessage>{errors?.title?.message}</FormErrorMessage>
               </FormControl>
             </ModalBody>
             <ModalFooter>
               <Button variant='ghost' mr={3} onClick={onClose}>
                 Close
               </Button>
-              <Button type='submit' colorScheme='orange' onClick={onClose}>
+              <Button
+                type='submit'
+                disabled={!!errors.title}
+                isLoading={formState.isSubmitting}
+                colorScheme='orange'
+                onClick={onClose}
+              >
                 Add Question
               </Button>
             </ModalFooter>

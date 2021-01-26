@@ -7,6 +7,7 @@ import {
   Button,
   Flex,
   FormControl,
+  FormErrorMessage,
   FormLabel,
   Heading,
   Link,
@@ -14,9 +15,39 @@ import {
   Text,
 } from '@chakra-ui/react';
 
+import { useForm } from 'react-hook-form';
+import { yupResolver } from '@hookform/resolvers/yup';
+import * as yup from 'yup';
+
 import { ColorModeSwitcher } from '../../components';
 
+const schema = yup.object().shape({
+  email: yup
+    .string()
+    .email('Please provide a valid email')
+    .required('Email is required'),
+  password: yup
+    .string()
+    .min(6, 'Password must be 6-16 character long')
+    .max(16, 'Password must be 6-16 character long')
+    .required('Password is required'),
+});
+
 const Login = () => {
+  const { register, handleSubmit, formState, errors } = useForm({
+    mode: 'onBlur',
+    resolver: yupResolver(schema),
+  });
+
+  const onSubmit = (data) => {
+    return new Promise((resolve) => {
+      setTimeout(() => {
+        alert(JSON.stringify(data));
+        resolve();
+      }, 3000);
+    });
+  };
+
   return (
     <Flex
       minHeight='100vh'
@@ -36,16 +67,25 @@ const Login = () => {
           <Heading>Sign In</Heading>
           <ColorModeSwitcher />
         </Flex>
-        <form>
-          <FormControl name='email' mb={4}>
+        <form onSubmit={handleSubmit(onSubmit)}>
+          <FormControl isInvalid={!!errors?.email?.message} mb={4}>
             <FormLabel>Email address</FormLabel>
-            <Input type='email' />
+            <Input type='text' name='email' ref={register} />
+            <FormErrorMessage>{errors?.email?.message}</FormErrorMessage>
           </FormControl>
-          <FormControl name='password'>
+          <FormControl isInvalid={!!errors?.password?.message}>
             <FormLabel>Password</FormLabel>
-            <Input type='password' />
+            <Input type='password' name='password' ref={register} />
+            <FormErrorMessage>{errors?.password?.message}</FormErrorMessage>
           </FormControl>
-          <Button width='full' mt={10} colorScheme='orange' type='submit'>
+          <Button
+            type='submit'
+            disabled={!!errors.email || !!errors.password}
+            isLoading={formState.isSubmitting}
+            mt={10}
+            colorScheme='orange'
+            isFullWidth
+          >
             Sign In
           </Button>
         </form>
