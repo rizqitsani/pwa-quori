@@ -14,7 +14,7 @@ const ThreadCard = ({ categories }) => {
   const cardBg = useColorModeValue('gray.100', 'gray.700');
 
   return (
-    <Box bg={cardBg} borderRadius='md' p={10} shadow='base'>
+    <Box bg={cardBg} borderRadius='md' p={{ base: 6, md: 10 }} shadow='base'>
       <Flex align='center' mb={4}>
         <Avatar
           name='Muhammad Rizqi Tsani'

@@ -14,9 +14,13 @@ const AnswerCard = () => {
   const cardBg = useColorModeValue('gray.100', 'gray.700');
 
   return (
-    <Box bg={cardBg} borderRadius='md' p={10} shadow='base'>
-      <Flex direction={{ base: 'column', md: 'row' }} justify='space-between'>
-        <Flex align='center' mb={4}>
+    <Box bg={cardBg} borderRadius='md' p={{ base: 6, md: 10 }} shadow='base'>
+      <Flex
+        direction={{ base: 'column', md: 'row' }}
+        justify='space-between'
+        mb={4}
+      >
+        <Flex align='center'>
           <Avatar
             name='Muhammad Rizqi Tsani'
             src='https://bit.ly/ryan-florence'
@@ -29,7 +33,7 @@ const AnswerCard = () => {
             <Text fontSize='xs'>1 hour ago</Text>
           </Flex>
         </Flex>
-        <Box>
+        <Box mt={{ base: 6, md: 0 }}>
           <IconButton
             variant='outline'
             colorScheme='green'

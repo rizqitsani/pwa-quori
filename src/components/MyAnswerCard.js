@@ -6,7 +6,7 @@ const MyAnswerCard = ({ categories }) => {
   const cardBg = useColorModeValue('gray.100', 'gray.700');
 
   return (
-    <Box bg={cardBg} borderRadius='md' p={10} shadow='base'>
+    <Box bg={cardBg} borderRadius='md' p={{ base: 6, md: 10 }} shadow='base'>
       <Heading fontSize='2xl' mb={4}>
         Thread #2
       </Heading>
