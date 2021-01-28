@@ -4,6 +4,8 @@ import {
   SIGN_OUT_SUCCESS,
   SIGN_UP_FAIL,
   SIGN_UP_SUCCESS,
+  UPDATE_PROFILE_FAIL,
+  UPDATE_PROFILE_SUCCESS,
 } from '../actions/types';
 
 export const signIn = (credentials) => (
@@ -63,5 +65,50 @@ export const signOut = () => (dispatch, getState, { getFirebase }) => {
     })
     .catch((error) => {
       // An error happened.
+    });
+};
+
+export const updateProfile = (updatedUserData) => (
+  dispatch,
+  getState,
+  { getFirebase, getFirestore },
+) => {
+  const firebase = getFirebase();
+  const firestore = getFirestore();
+
+  const { name: currentUserName } = getState().firebase.profile;
+  const {
+    uid: currentUserID,
+    email: currentUserEmail,
+  } = getState().firebase.auth;
+
+  console.log(currentUserName, currentUserID, currentUserEmail);
+
+  const { name, email, newPassword } = updatedUserData;
+
+  const promises = [];
+
+  if (name !== currentUserName) {
+    promises.push(
+      firestore.collection('users').doc(currentUserID).set({
+        name,
+      }),
+    );
+  }
+
+  if (email !== currentUserEmail) {
+    promises.push(firebase.auth().currentUser.updateEmail(email));
+  }
+
+  if (newPassword.length) {
+    promises.push(firebase.auth().currentUser.updatePassword(newPassword));
+  }
+
+  Promise.all(promises)
+    .then(() => {
+      dispatch({ type: UPDATE_PROFILE_SUCCESS });
+    })
+    .catch((error) => {
+      dispatch({ type: UPDATE_PROFILE_FAIL, payload: error });
     });
 };
