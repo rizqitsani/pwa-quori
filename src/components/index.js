@@ -4,9 +4,9 @@ import CategoriesLabel from './CategoriesLabel';
 import CategoriesList from './CategoriesList';
 import CategoriesTag from './CategoriesTag';
 import ColorModeSwitcher from './ColorModeSwitcher';
-import LoginButton from './LoginButton';
 import Logo from './Logo';
 import MainContainer from './MainContainer';
+import MenuButton from './MenuButton';
 import MenuDropdown from './MenuDropdown';
 import MenuItem from './MenuItem';
 import MenuLinks from './MenuLinks';
@@ -26,9 +26,9 @@ export {
   CategoriesList,
   CategoriesTag,
   ColorModeSwitcher,
-  LoginButton,
   Logo,
   MainContainer,
+  MenuButton,
   MenuDropdown,
   MenuItem,
   MenuLinks,

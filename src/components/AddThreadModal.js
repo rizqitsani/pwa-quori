@@ -47,7 +47,7 @@ const AddThreadModal = () => {
 
   return (
     <>
-      <Button leftIcon={<MdAdd />} onClick={onOpen}>
+      <Button leftIcon={<MdAdd />} onClick={onOpen} colorScheme='orange'>
         Ask a Question
       </Button>
 

@@ -4,12 +4,12 @@ import { Button } from '@chakra-ui/react';
 
 import { Link } from 'react-router-dom';
 
-const LoginButton = () => {
+const MenuButton = ({ text, to, ...rest }) => {
   return (
-    <Link to='/login'>
-      <Button>Login</Button>
+    <Link to={to}>
+      <Button {...rest}>{text}</Button>
     </Link>
   );
 };
 
-export default LoginButton;
+export default MenuButton;
