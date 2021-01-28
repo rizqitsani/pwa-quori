@@ -1,21 +1,10 @@
 import React from 'react';
 
-import { Box, Link, Stack, Text } from '@chakra-ui/react';
-
-import { Link as RouterLink } from 'react-router-dom';
+import { Box, Stack } from '@chakra-ui/react';
 
 import ColorModeSwitcher from './ColorModeSwitcher';
-import AddThreadModal from './AddThreadModal';
-
-const MenuItem = ({ children, isLast, to = '/', ...rest }) => {
-  return (
-    <Link as={RouterLink} to={to}>
-      <Text fontWeight='bold' display='block' {...rest}>
-        {children}
-      </Text>
-    </Link>
-  );
-};
+import SignedInLinks from './SignedInLinks';
+import SignedOutLinks from './SignedOutLinks';
 
 const MenuLinks = ({ isOpenMobile }) => {
   return (
@@ -30,8 +19,8 @@ const MenuLinks = ({ isOpenMobile }) => {
         direction={['column', 'row', 'row', 'row']}
         pt={[4, 4, 0, 0]}
       >
-        <MenuItem to='/mythreads'>My Threads</MenuItem>
-        <AddThreadModal />
+        <SignedInLinks />
+        <SignedOutLinks />
         <ColorModeSwitcher />
       </Stack>
     </Box>
