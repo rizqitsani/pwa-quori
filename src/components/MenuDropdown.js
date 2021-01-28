@@ -6,6 +6,7 @@ import {
   MenuButton,
   MenuItem,
   MenuList,
+  useColorModeValue,
 } from '@chakra-ui/react';
 import { MdPerson } from 'react-icons/md';
 
@@ -13,6 +14,8 @@ import { useDispatch } from 'react-redux';
 import { signOut } from '../store/actions/authActions';
 
 const MenuDropdown = () => {
+  const menuItemColor = useColorModeValue('black', 'orange.200');
+
   const dispatch = useDispatch();
 
   const handleLogout = () => {
@@ -29,8 +32,10 @@ const MenuDropdown = () => {
         variant={{ base: 'solid', md: 'ghost' }}
       />
       <MenuList>
-        <MenuItem>Edit Profile</MenuItem>
-        <MenuItem onClick={handleLogout}>Logout</MenuItem>
+        <MenuItem color={menuItemColor}>Edit Profile</MenuItem>
+        <MenuItem color={menuItemColor} onClick={handleLogout}>
+          Logout
+        </MenuItem>
       </MenuList>
     </Menu>
   );
