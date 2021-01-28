@@ -13,13 +13,9 @@ const middlewares = [thunk.withExtraArgument({ getFirebase, getFirestore })];
 const middlewareEnhancer = applyMiddleware(...middlewares);
 
 const enhancers = [middlewareEnhancer, reduxFirestore(firebase)];
-const composedEnhancers = composeWithDevTools(...enhancers);
+const composeEnhancers = composeWithDevTools({ trace: true });
+const composedEnhancers = composeEnhancers(...enhancers);
 
 const store = createStore(rootReducer, composedEnhancers);
-
-// const store = createStore(
-//   rootReducer,
-//   composeWithDevTools(applyMiddleware(...middleware)),
-// );
 
 export default store;

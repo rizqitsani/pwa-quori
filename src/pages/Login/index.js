@@ -19,7 +19,10 @@ import { useForm } from 'react-hook-form';
 import { yupResolver } from '@hookform/resolvers/yup';
 import * as yup from 'yup';
 
+import { useDispatch } from 'react-redux';
+
 import { ColorModeSwitcher } from '../../components';
+import { signIn } from '../../store/actions/authActions';
 
 const schema = yup.object().shape({
   email: yup
@@ -39,13 +42,16 @@ const Login = () => {
     resolver: yupResolver(schema),
   });
 
-  const onSubmit = (data) => {
-    return new Promise((resolve) => {
-      setTimeout(() => {
-        alert(JSON.stringify(data));
-        resolve();
-      }, 3000);
-    });
+  const dispatch = useDispatch();
+
+  const onSubmit = (credentials) => {
+    dispatch(signIn(credentials));
+    // return new Promise((resolve) => {
+    //   setTimeout(() => {
+    //     alert(JSON.stringify(data));
+    //     resolve();
+    //   }, 3000);
+    // });
   };
 
   return (

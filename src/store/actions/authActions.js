@@ -1,12 +1,34 @@
-import { LOGIN_FAIL, REGISTER_FAIL, REGISTER_SUCCESS } from '../actions/types';
+import {
+  SIGN_IN_FAIL,
+  SIGN_IN_SUCCESS,
+  SIGN_OUT_SUCCESS,
+  SIGN_UP_FAIL,
+  SIGN_UP_SUCCESS,
+} from '../actions/types';
 
-export const signIn = (data) => (dispatch, getStore, { getFirebase }) => {
-  dispatch({ type: LOGIN_FAIL });
+export const signIn = (credentials) => (
+  dispatch,
+  getState,
+  { getFirebase },
+) => {
+  const firebase = getFirebase();
+
+  const { email, password } = credentials;
+
+  firebase
+    .auth()
+    .signInWithEmailAndPassword(email, password)
+    .then(() => {
+      dispatch({ type: SIGN_IN_SUCCESS });
+    })
+    .catch((error) => {
+      dispatch({ type: SIGN_IN_FAIL, payload: error });
+    });
 };
 
 export const signUp = (newUserData) => (
   dispatch,
-  getStore,
+  getState,
   { getFirebase, getFirestore },
 ) => {
   const firebase = getFirebase();
@@ -23,9 +45,23 @@ export const signUp = (newUserData) => (
       });
     })
     .then(() => {
-      dispatch({ type: REGISTER_SUCCESS });
+      dispatch({ type: SIGN_UP_SUCCESS });
     })
     .catch((error) => {
-      dispatch({ type: REGISTER_FAIL, payload: error });
+      dispatch({ type: SIGN_UP_FAIL, payload: error });
+    });
+};
+
+export const signOut = () => (dispatch, getState, { getFirebase }) => {
+  const firebase = getFirebase();
+
+  firebase
+    .auth()
+    .signOut()
+    .then(() => {
+      dispatch({ type: SIGN_OUT_SUCCESS });
+    })
+    .catch((error) => {
+      // An error happened.
     });
 };

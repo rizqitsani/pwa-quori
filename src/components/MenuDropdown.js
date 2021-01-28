@@ -4,14 +4,21 @@ import {
   IconButton,
   Menu,
   MenuButton,
-  MenuDivider,
-  MenuGroup,
   MenuItem,
   MenuList,
 } from '@chakra-ui/react';
 import { MdPerson } from 'react-icons/md';
 
+import { useDispatch } from 'react-redux';
+import { signOut } from '../store/actions/authActions';
+
 const MenuDropdown = () => {
+  const dispatch = useDispatch();
+
+  const handleLogout = () => {
+    dispatch(signOut());
+  };
+
   return (
     <Menu isLazy>
       <MenuButton
@@ -22,15 +29,8 @@ const MenuDropdown = () => {
         variant={{ base: 'solid', md: 'ghost' }}
       />
       <MenuList>
-        <MenuGroup title='Profile'>
-          <MenuItem>My Account</MenuItem>
-          <MenuItem>Payments </MenuItem>
-        </MenuGroup>
-        <MenuDivider />
-        <MenuGroup title='Help'>
-          <MenuItem>Docs</MenuItem>
-          <MenuItem>FAQ</MenuItem>
-        </MenuGroup>
+        <MenuItem>Edit Profile</MenuItem>
+        <MenuItem onClick={handleLogout}>Logout</MenuItem>
       </MenuList>
     </Menu>
   );
