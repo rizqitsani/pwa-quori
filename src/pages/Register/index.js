@@ -1,6 +1,6 @@
 import React from 'react';
 
-import { Link as RouterLink } from 'react-router-dom';
+import { Link as RouterLink, useHistory } from 'react-router-dom';
 
 import {
   Box,
@@ -19,7 +19,7 @@ import { useForm } from 'react-hook-form';
 import { yupResolver } from '@hookform/resolvers/yup';
 import * as yup from 'yup';
 
-import { useDispatch } from 'react-redux';
+import { useDispatch, useSelector } from 'react-redux';
 import { signUp } from '../../store/actions/authActions';
 
 const schema = yup.object().shape({
@@ -47,11 +47,20 @@ const Register = () => {
     resolver: yupResolver(schema),
   });
 
+  const history = useHistory();
+
   const dispatch = useDispatch();
+
+  const firebase = useSelector((state) => state.firebase);
+  const { auth } = firebase;
 
   const onSubmit = (newUserData) => {
     dispatch(signUp(newUserData));
   };
+
+  if (auth.uid) {
+    history.push('/');
+  }
 
   return (
     <Flex

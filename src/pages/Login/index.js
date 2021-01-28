@@ -1,7 +1,5 @@
 import React from 'react';
 
-import { Link as RouterLink } from 'react-router-dom';
-
 import {
   Box,
   Button,
@@ -15,11 +13,13 @@ import {
   Text,
 } from '@chakra-ui/react';
 
+import { Link as RouterLink, useHistory } from 'react-router-dom';
+
 import { useForm } from 'react-hook-form';
 import { yupResolver } from '@hookform/resolvers/yup';
 import * as yup from 'yup';
 
-import { useDispatch } from 'react-redux';
+import { useDispatch, useSelector } from 'react-redux';
 
 import { ColorModeSwitcher } from '../../components';
 import { signIn } from '../../store/actions/authActions';
@@ -42,17 +42,20 @@ const Login = () => {
     resolver: yupResolver(schema),
   });
 
+  const history = useHistory();
+
   const dispatch = useDispatch();
+
+  const firebase = useSelector((state) => state.firebase);
+  const { auth } = firebase;
 
   const onSubmit = (credentials) => {
     dispatch(signIn(credentials));
-    // return new Promise((resolve) => {
-    //   setTimeout(() => {
-    //     alert(JSON.stringify(data));
-    //     resolve();
-    //   }, 3000);
-    // });
   };
+
+  if (auth.uid) {
+    history.push('/');
+  }
 
   return (
     <Flex
