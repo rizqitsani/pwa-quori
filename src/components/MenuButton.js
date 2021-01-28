@@ -1,12 +1,12 @@
 import React from 'react';
 
-import { Button } from '@chakra-ui/react';
+import { Button, Link } from '@chakra-ui/react';
 
-import { Link } from 'react-router-dom';
+import { Link as RouterLink } from 'react-router-dom';
 
 const MenuButton = ({ text, to, ...rest }) => {
   return (
-    <Link to={to}>
+    <Link as={RouterLink} to={to}>
       <Button {...rest}>{text}</Button>
     </Link>
   );

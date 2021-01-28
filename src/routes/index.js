@@ -9,6 +9,7 @@ import { isLoaded } from 'react-redux-firebase';
 
 import {
   Categories,
+  EditProfile,
   Home,
   Login,
   MyThreads,
@@ -41,6 +42,7 @@ const Routes = () => {
           <Route exact path='/login' component={Login} />
           <Route exact path='/register' component={Register} />
           <PrivateRoute exact path='/mythreads' component={MyThreads} />
+          <PrivateRoute exact path='/edit-profile' component={EditProfile} />
           <Route exact path='/categories/:name' component={Categories} />
           <Route exact path='/thread/:id' component={ThreadDetails} />
         </Switch>

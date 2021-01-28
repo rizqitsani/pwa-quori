@@ -2,6 +2,7 @@ import React from 'react';
 
 import {
   IconButton,
+  Link,
   Menu,
   MenuButton,
   MenuItem,
@@ -9,6 +10,8 @@ import {
   useColorModeValue,
 } from '@chakra-ui/react';
 import { MdPerson } from 'react-icons/md';
+
+import { Link as RouterLink } from 'react-router-dom';
 
 import { useDispatch } from 'react-redux';
 import { signOut } from '../store/actions/authActions';
@@ -23,7 +26,7 @@ const MenuDropdown = () => {
   };
 
   return (
-    <Menu isLazy>
+    <Menu isLazy placement='auto'>
       <MenuButton
         as={IconButton}
         aria-label='Options'
@@ -32,7 +35,9 @@ const MenuDropdown = () => {
         variant={{ base: 'solid', md: 'ghost' }}
       />
       <MenuList>
-        <MenuItem color={menuItemColor}>Edit Profile</MenuItem>
+        <Link as={RouterLink} to='/edit-profile'>
+          <MenuItem color={menuItemColor}>Edit Profile</MenuItem>
+        </Link>
         <MenuItem color={menuItemColor} onClick={handleLogout}>
           Logout
         </MenuItem>
