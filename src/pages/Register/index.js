@@ -20,7 +20,7 @@ import { yupResolver } from '@hookform/resolvers/yup';
 import * as yup from 'yup';
 
 import { useDispatch } from 'react-redux';
-import { signup } from '../../store/actions/authActions';
+import { signUp } from '../../store/actions/authActions';
 
 const schema = yup.object().shape({
   name: yup
@@ -50,7 +50,7 @@ const Register = () => {
   const dispatch = useDispatch();
 
   const onSubmit = (newUserData) => {
-    dispatch(signup(newUserData));
+    dispatch(signUp(newUserData));
   };
 
   return (

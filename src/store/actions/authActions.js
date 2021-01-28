@@ -1,11 +1,12 @@
 import { LOGIN_FAIL, REGISTER_FAIL, REGISTER_SUCCESS } from '../actions/types';
 
-export const login = (data) => (dispatch, { getFirebase }) => {
+export const signIn = (data) => (dispatch, getStore, { getFirebase }) => {
   dispatch({ type: LOGIN_FAIL });
 };
 
-export const signup = (newUserData) => (
+export const signUp = (newUserData) => (
   dispatch,
+  getStore,
   { getFirebase, getFirestore },
 ) => {
   const firebase = getFirebase();
