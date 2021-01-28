@@ -19,6 +19,9 @@ import { useForm } from 'react-hook-form';
 import { yupResolver } from '@hookform/resolvers/yup';
 import * as yup from 'yup';
 
+import { useDispatch } from 'react-redux';
+import { signup } from '../../store/actions/authActions';
+
 const schema = yup.object().shape({
   name: yup
     .string()
@@ -44,13 +47,10 @@ const Register = () => {
     resolver: yupResolver(schema),
   });
 
-  const onSubmit = (data) => {
-    return new Promise((resolve) => {
-      setTimeout(() => {
-        alert(JSON.stringify(data));
-        resolve();
-      }, 3000);
-    });
+  const dispatch = useDispatch();
+
+  const onSubmit = (newUserData) => {
+    dispatch(signup(newUserData));
   };
 
   return (
@@ -75,22 +75,32 @@ const Register = () => {
         <form onSubmit={handleSubmit(onSubmit)}>
           <FormControl isInvalid={!!errors?.name?.message} mb={4}>
             <FormLabel>Name</FormLabel>
-            <Input type='text' name='name' ref={register} />
+            <Input type='text' name='name' ref={register} autoComplete='off' />
             <FormErrorMessage>{errors?.name?.message}</FormErrorMessage>
           </FormControl>
           <FormControl isInvalid={!!errors?.email?.message} mb={4}>
             <FormLabel>Email address</FormLabel>
-            <Input type='text' name='email' ref={register} />
+            <Input type='text' name='email' ref={register} autoComplete='off' />
             <FormErrorMessage>{errors?.email?.message}</FormErrorMessage>
           </FormControl>
           <FormControl isInvalid={!!errors?.password?.message} mb={4}>
             <FormLabel>Password</FormLabel>
-            <Input type='password' name='password' ref={register} />
+            <Input
+              type='password'
+              name='password'
+              ref={register}
+              autoComplete='off'
+            />
             <FormErrorMessage>{errors?.password?.message}</FormErrorMessage>
           </FormControl>
           <FormControl isInvalid={!!errors?.confirmPassword?.message}>
             <FormLabel>Confirm Password</FormLabel>
-            <Input type='password' name='confirmPassword' ref={register} />
+            <Input
+              type='password'
+              name='confirmPassword'
+              ref={register}
+              autoComplete='off'
+            />
             <FormErrorMessage>
               {errors?.confirmPassword?.message}
             </FormErrorMessage>
