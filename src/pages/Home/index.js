@@ -1,9 +1,8 @@
-import React from 'react';
+import React, { useEffect, useState } from 'react';
 
 import { Grid, GridItem, Heading, Stack, Text } from '@chakra-ui/react';
 
-import { useSelector } from 'react-redux';
-import { useFirestoreConnect } from 'react-redux-firebase';
+import { useFirestore } from 'react-redux-firebase';
 
 import {
   CategoriesList,
@@ -13,9 +12,43 @@ import {
 } from '../../components';
 
 const Home = () => {
-  useFirestoreConnect(['threads', 'users']);
+  const firestore = useFirestore();
 
-  const threads = useSelector((state) => state.firestore.ordered.threads);
+  const [threads, setThreads] = useState([]);
+
+  useEffect(() => {
+    const unsubscribe = firestore
+      .collection('threads')
+      .onSnapshot((querySnapshot) => {
+        const threadList = [];
+        const promises = [];
+
+        querySnapshot.forEach((thread) => {
+          promises.push(
+            firestore.collection('users').doc(thread.data().userID).get(),
+          );
+          const details = {
+            categories: thread.data().categories,
+            createdAt: thread.data().createdAt,
+            threadId: thread.id,
+            title: thread.data().title,
+          };
+          threadList.push(details);
+        });
+
+        Promise.all(promises).then((snapshot) => {
+          snapshot.forEach((user, index) => {
+            threadList[index].userName = user.data().name;
+          });
+          setThreads(threadList);
+        });
+
+        console.log(threadList);
+      });
+    return () => {
+      unsubscribe();
+    };
+  }, [firestore]);
 
   return (
     <>
@@ -32,15 +65,17 @@ const Home = () => {
             <Heading>#Threads</Heading>
             <Stack spacing={8} my={8}>
               {threads &&
-                Object.values(threads).map((thread) => (
-                  <ThreadCard
-                    key={thread.threadID}
-                    categories={thread.categories}
-                    createdAt={thread.createdAt}
-                    title={thread.title}
-                    userName={thread.userName}
-                  />
-                ))}
+                Object.values(threads).map((thread) => {
+                  return (
+                    <ThreadCard
+                      key={thread.threadID}
+                      categories={thread.categories}
+                      createdAt={thread.createdAt}
+                      title={thread.title}
+                      userName={thread.userName}
+                    />
+                  );
+                })}
             </Stack>
           </GridItem>
           <GridItem colSpan={1} />

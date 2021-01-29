@@ -11,16 +11,13 @@ import {
 import CategoriesLabel from './CategoriesLabel';
 
 const ThreadCard = ({ categories, createdAt, title, userName }) => {
+  console.log('card', userName);
   const cardBg = useColorModeValue('gray.100', 'gray.700');
 
   return (
     <Box bg={cardBg} borderRadius='md' p={{ base: 6, md: 10 }} shadow='base'>
       <Flex align='center' mb={4}>
-        <Avatar
-          name='Muhammad Rizqi Tsani'
-          src='https://bit.ly/ryan-florence'
-          mr={4}
-        />
+        <Avatar name={userName} mr={4} />
         <Flex direction='column'>
           <Text fontSize='xs' fontWeight='bold'>
             {userName}
