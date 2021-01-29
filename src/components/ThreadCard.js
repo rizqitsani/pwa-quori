@@ -20,9 +20,9 @@ const ThreadCard = ({ categories, createdAt, id, title, userName }) => {
   return (
     <Box bg={cardBg} borderRadius='md' p={{ base: 6, md: 10 }} shadow='base'>
       <Flex align='center' mb={4}>
-        <Avatar name={userName} mr={4} />
+        <Avatar name={userName} mr={3} />
         <Flex direction='column'>
-          <Text fontSize='xs' fontWeight='bold'>
+          <Text fontSize='md' fontWeight='bold'>
             {userName}
           </Text>
           <Text fontSize='xs'>{'tes'}</Text>

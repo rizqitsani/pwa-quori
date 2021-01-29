@@ -24,10 +24,10 @@ const AnswerCard = () => {
           <Avatar
             name='Muhammad Rizqi Tsani'
             src='https://bit.ly/ryan-florence'
-            mr={4}
+            mr={3}
           />
           <Flex direction='column'>
-            <Text fontSize='xs' fontWeight='bold'>
+            <Text fontSize='md' fontWeight='bold'>
               Muhammad Rizqi Tsani
             </Text>
             <Text fontSize='xs'>1 hour ago</Text>
