@@ -30,9 +30,8 @@ const MyThreads = () => {
   const firebase = useSelector((state) => state.firebase);
   const { auth } = firebase;
 
-  // Get myQuestions
   useEffect(() => {
-    const unsubscribe = firestore
+    const getQuestions = firestore
       .collection('threads')
       .where('userID', '==', auth.uid)
       .onSnapshot((querySnapshot) => {
@@ -51,14 +50,7 @@ const MyThreads = () => {
         setMyQuestions(threadList);
       });
 
-    return () => {
-      unsubscribe();
-    };
-  }, [auth.uid, firestore]);
-
-  // Get myAnswers
-  useEffect(() => {
-    const unsubscribe = firestore
+    const getAnswers = firestore
       .collection('replies')
       .where('userID', '==', auth.uid)
       .onSnapshot((querySnapshot) => {
@@ -88,7 +80,8 @@ const MyThreads = () => {
       });
 
     return () => {
-      unsubscribe();
+      getQuestions();
+      getAnswers();
     };
   }, [auth.uid, firestore]);
 

@@ -12,7 +12,7 @@ const MyAnswerCard = ({ body, categories, title }) => {
       <Heading fontSize='2xl' mb={4}>
         {title}
       </Heading>
-      {categories ? <CategoriesLabel categories={categories} mb={0} /> : null}
+      {categories ? <CategoriesLabel categories={categories} mb={2} /> : null}
       <Text>{body}</Text>
     </Box>
   );

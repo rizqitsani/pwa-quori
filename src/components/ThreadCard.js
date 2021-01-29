@@ -34,12 +34,12 @@ const ThreadCard = ({ categories, createdAt, id, title, userName }) => {
           <Text fontSize='xs'>{formattedTime}</Text>
         </Flex>
       </Flex>
-      <CategoriesLabel categories={categories} />
       <Link as={RouterLink} to={`/thread/${id}`}>
         <Heading fontSize='2xl' mb={4}>
           {title}
         </Heading>
       </Link>
+      <CategoriesLabel categories={categories} />
       <Text>
         Lorem ipsum, dolor sit amet consectetur adipisicing elit. Dolor
         voluptate voluptatibus esse amet modi itaque dicta quasi soluta,

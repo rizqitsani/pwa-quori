@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { useEffect, useState } from 'react';
 
 import {
   Button,
@@ -51,13 +51,14 @@ const ThreadDetails = ({ match }) => {
   const onSubmit = (data) => {
     dispatch(addReply({ ...data, threadID }));
     reset();
-    // return new Promise((resolve) => {
-    //   setTimeout(() => {
-    //     alert(JSON.stringify(data));
-    //     resolve();
-    //   }, 3000);
-    // });
   };
+
+  // useEffect(() => {
+  //   effect;
+  //   return () => {
+  //     cleanup;
+  //   };
+  // }, [input]);
 
   return (
     <>

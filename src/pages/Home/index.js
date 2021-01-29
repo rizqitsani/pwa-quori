@@ -17,7 +17,7 @@ const Home = () => {
   const [threads, setThreads] = useState([]);
 
   useEffect(() => {
-    const unsubscribe = firestore
+    const getThreads = firestore
       .collection('threads')
       .orderBy('createdAt', 'desc')
       .onSnapshot((querySnapshot) => {
@@ -46,7 +46,7 @@ const Home = () => {
         });
       });
     return () => {
-      unsubscribe();
+      getThreads();
     };
   }, [firestore]);
 
