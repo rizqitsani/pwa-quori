@@ -3,6 +3,8 @@ import {
   ADD_THREAD_SUCCESS,
   DELETE_THREAD_FAIL,
   DELETE_THREAD_SUCCESS,
+  EDIT_THREAD_FAIL,
+  EDIT_THREAD_SUCCESS,
 } from '../actions/types';
 
 export const addThread = (threadData) => async (
@@ -30,6 +32,43 @@ export const addThread = (threadData) => async (
   }
 };
 
+export const editThread = (editedData) => async (
+  dispatch,
+  getState,
+  { getFirestore },
+) => {
+  try {
+    const firestore = getFirestore();
+
+    const { uid } = getState().firebase.auth;
+
+    const { category, threadID, title } = editedData;
+
+    await firestore
+      .collection('threads')
+      .doc(threadID)
+      .set({
+        categories: firestore.FieldValue.arrayUnion(category),
+        createdAt: new Date(),
+        title,
+        userID: uid,
+      });
+
+    const deletedReplies = firestore
+      .collection('replies')
+      .where('threadID', '==', threadID);
+
+    const snapShots = await deletedReplies.get();
+    snapShots.forEach((doc) => {
+      doc.ref.delete();
+    });
+
+    dispatch({ type: EDIT_THREAD_SUCCESS });
+  } catch (error) {
+    dispatch({ type: EDIT_THREAD_FAIL, payload: error });
+  }
+};
+
 export const deleteThread = (threadID) => async (
   dispatch,
   getState,
@@ -39,8 +78,6 @@ export const deleteThread = (threadID) => async (
     const firestore = getFirestore();
 
     await firestore.collection('threads').doc(threadID).delete();
-
-    console.log('id', threadID);
 
     const deletedReplies = firestore
       .collection('replies')

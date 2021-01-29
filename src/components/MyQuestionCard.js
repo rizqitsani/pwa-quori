@@ -28,7 +28,7 @@ import { yupResolver } from '@hookform/resolvers/yup';
 import * as yup from 'yup';
 
 import { useDispatch } from 'react-redux';
-import { deleteThread } from '../store/actions/threadActions';
+import { deleteThread, editThread } from '../store/actions/threadActions';
 
 import CategoriesLabel from './CategoriesLabel';
 
@@ -69,7 +69,10 @@ const MyQuestionCard = ({ categories, id, title }) => {
   };
 
   const handleSubmitEdit = () => {
-    alert(JSON.stringify(formValue));
+    if (formValue.category !== categories[0] || formValue.title !== title)
+      dispatch(editThread({ ...formValue, threadID: id }));
+
+    setIsOpenEdit(false);
   };
 
   const onSubmit = (editedData) => {
@@ -104,6 +107,7 @@ const MyQuestionCard = ({ categories, id, title }) => {
                   defaultValue={title}
                   placeholder='Start it with "What", "Why", "How", etc.'
                   ref={register}
+                  autoComplete='off'
                 />
                 <FormErrorMessage>{errors?.title?.message}</FormErrorMessage>
               </FormControl>
