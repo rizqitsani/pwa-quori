@@ -28,6 +28,7 @@ const Home = () => {
             firestore.collection('users').doc(thread.data().userID).get(),
           );
           const details = {
+            threadID: thread.id,
             categories: thread.data().categories,
             createdAt: thread.data().createdAt,
             threadId: thread.id,
@@ -42,8 +43,6 @@ const Home = () => {
           });
           setThreads(threadList);
         });
-
-        console.log(threadList);
       });
     return () => {
       unsubscribe();

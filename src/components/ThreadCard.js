@@ -11,7 +11,6 @@ import {
 import CategoriesLabel from './CategoriesLabel';
 
 const ThreadCard = ({ categories, createdAt, title, userName }) => {
-  console.log('card', userName);
   const cardBg = useColorModeValue('gray.100', 'gray.700');
 
   return (
