@@ -1,25 +1,52 @@
-import React from 'react';
+import React, { useState } from 'react';
 
 import {
   Avatar,
   Box,
+  Button,
+  FormControl,
+  FormErrorMessage,
   Flex,
   IconButton,
   Text,
+  Textarea,
   useColorModeValue,
 } from '@chakra-ui/react';
 import { MdDelete, MdModeEdit } from 'react-icons/md';
+
+import { useForm } from 'react-hook-form';
+import { yupResolver } from '@hookform/resolvers/yup';
+import * as yup from 'yup';
 
 import { useSelector } from 'react-redux';
 
 import dayjs from 'dayjs';
 import relativeTime from 'dayjs/plugin/relativeTime';
 
+const schema = yup.object().shape({
+  reply: yup.string().required('This field is required'),
+});
+
 const AnswerCard = ({ body, createdAt, id, userID, userName }) => {
-  const cardBg = useColorModeValue('gray.100', 'gray.700');
+  const [isEditing, setIsEditing] = useState(false);
+
+  const { errors, formState, handleSubmit, register } = useForm({
+    mode: 'onSubmit',
+    resolver: yupResolver(schema),
+  });
 
   const firebase = useSelector((state) => state.firebase);
   const { auth } = firebase;
+
+  const cardBg = useColorModeValue('gray.100', 'gray.700');
+
+  const handleEditClick = () => {
+    setIsEditing((prevState) => !prevState);
+  };
+
+  const onSubmit = (data) => {
+    setIsEditing(false);
+  };
 
   dayjs.extend(relativeTime);
   const formattedTime = dayjs(createdAt.toDate()).fromNow();
@@ -43,6 +70,7 @@ const AnswerCard = ({ body, createdAt, id, userID, userName }) => {
         {userID === auth.uid ? (
           <Box mt={{ base: 6, md: 0 }}>
             <IconButton
+              onClick={handleEditClick}
               variant='outline'
               colorScheme='green'
               icon={<MdModeEdit />}
@@ -56,7 +84,31 @@ const AnswerCard = ({ body, createdAt, id, userID, userName }) => {
           </Box>
         ) : null}
       </Flex>
-      <Text>{body}</Text>
+      {isEditing ? (
+        <form onSubmit={handleSubmit(onSubmit)}>
+          <FormControl isInvalid={!!errors?.reply?.message} mb={2}>
+            <Textarea
+              name='reply'
+              defaultValue={body}
+              ref={register}
+              placeholder='Write your thoughts here...'
+              size='sm'
+              resize='vertical'
+            />
+            <FormErrorMessage>{errors?.reply?.message}</FormErrorMessage>
+          </FormControl>
+          <Button
+            type='submit'
+            isLoading={formState.isSubmitting}
+            colorScheme='orange'
+            size='sm'
+          >
+            Edit
+          </Button>
+        </form>
+      ) : (
+        <Text>{body}</Text>
+      )}
     </Box>
   );
 };
