@@ -32,7 +32,6 @@ const Home = () => {
             threadID: thread.id,
             categories: thread.data().categories,
             createdAt: thread.data().createdAt,
-            threadId: thread.id,
             title: thread.data().title,
           };
           threadList.push(details);

@@ -1,6 +1,8 @@
 import React, { useEffect, useState } from 'react';
 
 import {
+  Alert,
+  AlertIcon,
   Button,
   Divider,
   FormControl,
@@ -18,14 +20,13 @@ import { useForm } from 'react-hook-form';
 import { yupResolver } from '@hookform/resolvers/yup';
 import * as yup from 'yup';
 
-import { useDispatch } from 'react-redux';
+import { useDispatch, useSelector } from 'react-redux';
+import { useFirestore } from 'react-redux-firebase';
 
-import {
-  AnswerCard,
-  CategoriesList,
-  MainContainer,
-  Navbar,
-} from '../../components';
+import dayjs from 'dayjs';
+import relativeTime from 'dayjs/plugin/relativeTime';
+
+import { AnswerCard, MainContainer, Navbar } from '../../components';
 import { addReply } from '../../store/actions/replyActions';
 
 const schema = yup.object().shape({
@@ -33,16 +34,23 @@ const schema = yup.object().shape({
 });
 
 const ThreadDetails = ({ match }) => {
+  const firestore = useFirestore();
+
   const [isOpen, setIsOpen] = useState(false);
+  const [details, setDetails] = useState({});
+  const [replies, setReplies] = useState([]);
 
   const { errors, formState, handleSubmit, register, reset } = useForm({
     mode: 'onSubmit',
     resolver: yupResolver(schema),
   });
 
+  const { id: threadID } = match.params;
+
   const dispatch = useDispatch();
 
-  const { id: threadID } = match.params;
+  const firebase = useSelector((state) => state.firebase);
+  const { auth } = firebase;
 
   const handleAnswerClick = () => {
     setIsOpen((prevState) => !prevState);
@@ -53,35 +61,90 @@ const ThreadDetails = ({ match }) => {
     reset();
   };
 
-  // useEffect(() => {
-  //   effect;
-  //   return () => {
-  //     cleanup;
-  //   };
-  // }, [input]);
+  useEffect(() => {
+    const getThreadDetails = firestore
+      .collection('threads')
+      .doc(threadID)
+      .onSnapshot((querySnapshot) => {
+        const details = {};
+        const promises = [];
+
+        promises.push(
+          firestore.collection('users').doc(querySnapshot.data().userID).get(),
+        );
+
+        details.categories = querySnapshot.data().categories;
+        details.createdAt = querySnapshot.data().createdAt.toDate();
+        details.title = querySnapshot.data().title;
+
+        Promise.all(promises).then((snapshot) => {
+          snapshot.forEach((user) => {
+            details.userID = user.id;
+            details.userName = user.data().name;
+          });
+          setDetails(details);
+        });
+      });
+
+    const getReplies = firestore
+      .collection('replies')
+      .where('threadID', '==', threadID)
+      .orderBy('createdAt', 'desc')
+      .onSnapshot((querySnapshot) => {
+        const replyList = [];
+        const promises = [];
+
+        querySnapshot.forEach((reply) => {
+          promises.push(
+            firestore.collection('users').doc(reply.data().userID).get(),
+          );
+          const details = {
+            replyID: reply.id,
+            body: reply.data().body,
+            createdAt: reply.data().createdAt,
+          };
+          replyList.push(details);
+        });
+
+        Promise.all(promises).then((snapshot) => {
+          snapshot.forEach((user, index) => {
+            replyList[index].userID = user.id;
+            replyList[index].userName = user.data().name;
+          });
+          setReplies(replyList);
+        });
+      });
+
+    return () => {
+      getThreadDetails();
+      getReplies();
+    };
+  }, [firestore, threadID]);
+
+  dayjs.extend(relativeTime);
 
   return (
     <>
       <Navbar />
       <MainContainer>
         <Grid h='200px' templateColumns='repeat(5, 1fr)' gap={4}>
-          <GridItem colSpan={{ base: 5, md: 1 }}>
-            <Text fontWeight='bold' mb={4}>
-              Things you might be interested in
-            </Text>
-            <CategoriesList />
-          </GridItem>
-          <GridItem colSpan={{ base: 5, md: 3 }}>
-            <Heading>#What is wrong with cat? </Heading>
-            <Button
-              onClick={handleAnswerClick}
-              leftIcon={<MdComment />}
-              colorScheme='orange'
-              variant='outline'
-              my={6}
-            >
-              Answer
-            </Button>
+          <GridItem colStart={{ base: 1, md: 2 }} colEnd={{ base: 6, md: 5 }}>
+            <Heading>{`#${details.title}`}</Heading>
+            <Text mt={4}>{`Asked by ${details.userName} · ${dayjs(
+              details.createdAt,
+            ).fromNow()}`}</Text>
+            {details.userID !== auth.uid ? (
+              <Button
+                onClick={handleAnswerClick}
+                leftIcon={<MdComment />}
+                colorScheme='orange'
+                variant='outline'
+                my={6}
+              >
+                Answer
+              </Button>
+            ) : null}
+
             <form onSubmit={handleSubmit(onSubmit)}>
               <FormControl isInvalid={!!errors?.reply?.message} mb={4}>
                 <Textarea
@@ -105,12 +168,32 @@ const ThreadDetails = ({ match }) => {
               </Button>
             </form>
             <Divider my={4} />
-            <Text fontSize='lg' fontWeight='bold'>
-              2 Thoughts
-            </Text>
+            {replies.length > 0 ? (
+              <Text fontSize='lg' fontWeight='bold'>
+                {`${replies.length} Thoughts`}
+              </Text>
+            ) : null}
+            <Text fontSize='lg' fontWeight='bold'></Text>
             <Stack spacing={8} my={8}>
-              <AnswerCard />
-              <AnswerCard />
+              {replies ? (
+                Object.values(replies).map((reply) => {
+                  return (
+                    <AnswerCard
+                      key={reply.replyID}
+                      id={reply.replyID}
+                      body={reply.body}
+                      createdAt={reply.createdAt}
+                      userID={reply.userID}
+                      userName={reply.userName}
+                    />
+                  );
+                })
+              ) : (
+                <Alert status='info'>
+                  <AlertIcon />
+                  Nobody have shared their thoughts on this!
+                </Alert>
+              )}
             </Stack>
           </GridItem>
           <GridItem colSpan={1}></GridItem>

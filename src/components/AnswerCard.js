@@ -10,8 +10,19 @@ import {
 } from '@chakra-ui/react';
 import { MdDelete, MdModeEdit } from 'react-icons/md';
 
-const AnswerCard = () => {
+import { useSelector } from 'react-redux';
+
+import dayjs from 'dayjs';
+import relativeTime from 'dayjs/plugin/relativeTime';
+
+const AnswerCard = ({ body, createdAt, id, userID, userName }) => {
   const cardBg = useColorModeValue('gray.100', 'gray.700');
+
+  const firebase = useSelector((state) => state.firebase);
+  const { auth } = firebase;
+
+  dayjs.extend(relativeTime);
+  const formattedTime = dayjs(createdAt.toDate()).fromNow();
 
   return (
     <Box bg={cardBg} borderRadius='md' p={{ base: 6, md: 10 }} shadow='base'>
@@ -21,42 +32,31 @@ const AnswerCard = () => {
         mb={4}
       >
         <Flex align='center'>
-          <Avatar
-            name='Muhammad Rizqi Tsani'
-            src='https://bit.ly/ryan-florence'
-            mr={3}
-          />
+          <Avatar name={userName} mr={3} />
           <Flex direction='column'>
             <Text fontSize='md' fontWeight='bold'>
-              Muhammad Rizqi Tsani
+              {userName}
             </Text>
-            <Text fontSize='xs'>1 hour ago</Text>
+            <Text fontSize='xs'>{formattedTime}</Text>
           </Flex>
         </Flex>
-        <Box mt={{ base: 6, md: 0 }}>
-          <IconButton
-            variant='outline'
-            colorScheme='green'
-            icon={<MdModeEdit />}
-            mr={2}
-          />
-          <IconButton variant='outline' colorScheme='red' icon={<MdDelete />} />
-        </Box>
+        {userID === auth.uid ? (
+          <Box mt={{ base: 6, md: 0 }}>
+            <IconButton
+              variant='outline'
+              colorScheme='green'
+              icon={<MdModeEdit />}
+              mr={2}
+            />
+            <IconButton
+              variant='outline'
+              colorScheme='red'
+              icon={<MdDelete />}
+            />
+          </Box>
+        ) : null}
       </Flex>
-      <Text>
-        Lorem ipsum, dolor sit amet consectetur adipisicing elit. Dolor
-        voluptate voluptatibus esse amet modi itaque dicta quasi soluta,
-        necessitatibus sapiente beatae autem, ullam ex laudantium eligendi
-        veritatis animi exercitationem quos consectetur? Tenetur, esse adipisci
-        sapiente ex ab magni earum deserunt, facere, magnam modi omnis tempora
-        aperiam ipsa voluptatum eaque nisi inventore numquam nesciunt. Pariatur
-        officia porro, iure qui soluta doloribus perferendis similique in non,
-        tempora cum? Eligendi provident ab, cupiditate debitis fuga magnam a
-        reprehenderit perferendis voluptatibus vitae? Culpa voluptas accusantium
-        cum quisquam delectus autem eaque doloribus doloremque repellendus
-        temporibus, maiores repellat quidem quo assumenda praesentium quia nulla
-        beatae consectetur.
-      </Text>
+      <Text>{body}</Text>
     </Box>
   );
 };
