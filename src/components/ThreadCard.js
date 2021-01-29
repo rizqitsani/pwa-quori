@@ -10,7 +10,7 @@ import {
 } from '@chakra-ui/react';
 import CategoriesLabel from './CategoriesLabel';
 
-const ThreadCard = ({ categories }) => {
+const ThreadCard = ({ categories, createdAt, title, userName }) => {
   const cardBg = useColorModeValue('gray.100', 'gray.700');
 
   return (
@@ -23,14 +23,14 @@ const ThreadCard = ({ categories }) => {
         />
         <Flex direction='column'>
           <Text fontSize='xs' fontWeight='bold'>
-            Muhammad Rizqi Tsani
+            {userName}
           </Text>
-          <Text fontSize='xs'>1 hour ago</Text>
+          <Text fontSize='xs'>{'tes'}</Text>
         </Flex>
       </Flex>
       <CategoriesLabel categories={categories} />
       <Heading fontSize='2xl' mb={4}>
-        Thread #2
+        {title}
       </Heading>
       <Text>
         Lorem ipsum, dolor sit amet consectetur adipisicing elit. Dolor
