@@ -132,7 +132,7 @@ const MyThreads = () => {
                   );
                 })
               ) : (
-                <Alert status='warning'>
+                <Alert status='info'>
                   <AlertIcon />
                   You haven't share your thoughts to others!
                 </Alert>
