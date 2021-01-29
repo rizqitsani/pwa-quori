@@ -12,10 +12,16 @@ import {
 
 import { Link as RouterLink } from 'react-router-dom';
 
+import dayjs from 'dayjs';
+import relativeTime from 'dayjs/plugin/relativeTime';
+
 import CategoriesLabel from './CategoriesLabel';
 
 const ThreadCard = ({ categories, createdAt, id, title, userName }) => {
   const cardBg = useColorModeValue('gray.100', 'gray.700');
+
+  dayjs.extend(relativeTime);
+  const formattedTime = dayjs(createdAt.toDate()).fromNow();
 
   return (
     <Box bg={cardBg} borderRadius='md' p={{ base: 6, md: 10 }} shadow='base'>
@@ -25,7 +31,7 @@ const ThreadCard = ({ categories, createdAt, id, title, userName }) => {
           <Text fontSize='md' fontWeight='bold'>
             {userName}
           </Text>
-          <Text fontSize='xs'>{'tes'}</Text>
+          <Text fontSize='xs'>{formattedTime}</Text>
         </Flex>
       </Flex>
       <CategoriesLabel categories={categories} />

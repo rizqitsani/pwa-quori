@@ -19,6 +19,7 @@ const Home = () => {
   useEffect(() => {
     const unsubscribe = firestore
       .collection('threads')
+      .orderBy('createdAt', 'desc')
       .onSnapshot((querySnapshot) => {
         const threadList = [];
         const promises = [];
