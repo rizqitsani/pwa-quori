@@ -175,7 +175,7 @@ const ThreadDetails = ({ match }) => {
             ) : null}
             <Text fontSize='lg' fontWeight='bold'></Text>
             <Stack spacing={8} my={8}>
-              {replies ? (
+              {replies.length > 0 ? (
                 Object.values(replies).map((reply) => {
                   return (
                     <AnswerCard
