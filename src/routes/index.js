@@ -44,7 +44,7 @@ const Routes = () => {
           <PrivateRoute exact path='/mythreads' component={MyThreads} />
           <PrivateRoute exact path='/edit-profile' component={EditProfile} />
           <Route exact path='/categories/:name' component={Categories} />
-          <Route exact path='/thread/:id' component={ThreadDetails} />
+          <PrivateRoute exact path='/thread/:id' component={ThreadDetails} />
         </Switch>
       </AuthIsLoaded>
     </Router>
