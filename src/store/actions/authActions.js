@@ -82,8 +82,6 @@ export const updateProfile = (updatedUserData) => (
     email: currentUserEmail,
   } = getState().firebase.auth;
 
-  console.log(currentUserName, currentUserID, currentUserEmail);
-
   const { name, email, newPassword } = updatedUserData;
 
   const promises = [];

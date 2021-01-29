@@ -1,13 +1,17 @@
-import { ADD_THREAD } from '../actions/types';
+import { ADD_THREAD_FAIL, ADD_THREAD_SUCCESS } from '../actions/types';
 
 const initialState = {
   error: null,
 };
 
 const threadReducer = (state = initialState, action) => {
-  switch (action.type) {
-    case ADD_THREAD:
-      return state;
+  const { payload, type } = action;
+
+  switch (type) {
+    case ADD_THREAD_FAIL:
+      return { ...state, error: payload?.message };
+    case ADD_THREAD_SUCCESS:
+      return { ...state, error: null };
     default:
       return state;
   }

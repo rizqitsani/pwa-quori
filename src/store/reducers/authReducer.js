@@ -13,8 +13,9 @@ const initialState = {
 };
 
 const authReducer = (state = initialState, action) => {
-  const { payload } = action;
-  switch (action.type) {
+  const { payload, type } = action;
+
+  switch (type) {
     case SIGN_IN_FAIL:
     case SIGN_UP_FAIL:
     case UPDATE_PROFILE_FAIL:

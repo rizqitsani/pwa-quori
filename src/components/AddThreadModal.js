@@ -22,6 +22,9 @@ import { useForm } from 'react-hook-form';
 import { yupResolver } from '@hookform/resolvers/yup';
 import * as yup from 'yup';
 
+import { useDispatch } from 'react-redux';
+import { addThread } from '../store/actions/threadActions';
+
 const schema = yup.object().shape({
   title: yup.string().required('This field is required'),
 });
@@ -36,13 +39,10 @@ const AddThreadModal = () => {
     resolver: yupResolver(schema),
   });
 
-  const onSubmit = (data) => {
-    return new Promise((resolve) => {
-      setTimeout(() => {
-        alert(JSON.stringify(data));
-        resolve();
-      }, 3000);
-    });
+  const dispatch = useDispatch();
+
+  const onSubmit = (threadData) => {
+    dispatch(addThread(threadData));
   };
 
   return (
