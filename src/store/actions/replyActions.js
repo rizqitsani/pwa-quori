@@ -1,4 +1,11 @@
-import { ADD_REPLY_FAIL, ADD_REPLY_SUCCESS } from './types';
+import {
+  ADD_REPLY_FAIL,
+  ADD_REPLY_SUCCESS,
+  DELETE_REPLY_FAIL,
+  DELETE_REPLY_SUCCESS,
+  EDIT_REPLY_FAIL,
+  EDIT_REPLY_SUCCESS,
+} from './types';
 
 export const addReply = (replyData) => async (
   dispatch,
@@ -34,5 +41,42 @@ export const addReply = (replyData) => async (
     }
   } catch (error) {
     dispatch({ type: ADD_REPLY_FAIL, payload: error });
+  }
+};
+
+export const editReply = (editedData) => async (
+  dispatch,
+  getState,
+  { getFirestore },
+) => {
+  try {
+    const firestore = getFirestore();
+
+    const { reply, replyID } = editedData;
+
+    await firestore.collection('replies').doc(replyID).update({
+      body: reply,
+      createdAt: new Date(),
+    });
+
+    dispatch({ type: EDIT_REPLY_SUCCESS });
+  } catch (error) {
+    dispatch({ type: EDIT_REPLY_FAIL, payload: error });
+  }
+};
+
+export const deleteReply = (replyID) => async (
+  dispatch,
+  getState,
+  { getFirestore },
+) => {
+  try {
+    const firestore = getFirestore();
+
+    await firestore.collection('replies').doc(replyID).delete();
+
+    dispatch({ type: DELETE_REPLY_SUCCESS });
+  } catch (error) {
+    dispatch({ type: DELETE_REPLY_FAIL, payload: error });
   }
 };
