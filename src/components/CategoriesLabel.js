@@ -5,7 +5,7 @@ import { HStack, Tag } from '@chakra-ui/react';
 const CategoriesLabel = ({ categories, ...props }) => {
   return (
     <HStack mt={1} mb={3} wrap='wrap' {...props}>
-      {categories?.map((c) => {
+      {categories?.map((c, index) => {
         let color = '';
         switch (c) {
           case 'Web Development':
@@ -24,7 +24,7 @@ const CategoriesLabel = ({ categories, ...props }) => {
             break;
         }
         return (
-          <Tag size='sm' colorScheme={color}>
+          <Tag key={index} size='sm' colorScheme={color}>
             {c}
           </Tag>
         );

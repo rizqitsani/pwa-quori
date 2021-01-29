@@ -101,7 +101,6 @@ const MyThreads = () => {
             <Stack spacing={8} my={8}>
               {myQuestions.length ? (
                 Object.values(myQuestions).map((thread) => {
-                  console.log(thread.threadID);
                   return (
                     <MyQuestionCard
                       key={thread.threadID}

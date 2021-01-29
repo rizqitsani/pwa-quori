@@ -19,11 +19,16 @@ import { MdDelete } from 'react-icons/md';
 
 import { Link as RouterLink } from 'react-router-dom';
 
+import { useDispatch } from 'react-redux';
+import { deleteThread } from '../store/actions/threadActions';
+
 import CategoriesLabel from './CategoriesLabel';
 
 const MyQuestionCard = ({ categories, id, title }) => {
   const [isOpen, setIsOpen] = useState(false);
   const cancelRef = useRef();
+
+  const dispatch = useDispatch();
 
   const cardBg = useColorModeValue('gray.100', 'gray.700');
 
@@ -31,6 +36,7 @@ const MyQuestionCard = ({ categories, id, title }) => {
   const onOpen = () => setIsOpen(true);
 
   const handleDeleteClick = () => {
+    dispatch(deleteThread(id));
     setIsOpen(false);
   };
 
