@@ -5,12 +5,16 @@ import {
   Box,
   Flex,
   Heading,
+  Link,
   Text,
   useColorModeValue,
 } from '@chakra-ui/react';
+
+import { Link as RouterLink } from 'react-router-dom';
+
 import CategoriesLabel from './CategoriesLabel';
 
-const ThreadCard = ({ categories, createdAt, title, userName }) => {
+const ThreadCard = ({ categories, createdAt, id, title, userName }) => {
   const cardBg = useColorModeValue('gray.100', 'gray.700');
 
   return (
@@ -25,9 +29,11 @@ const ThreadCard = ({ categories, createdAt, title, userName }) => {
         </Flex>
       </Flex>
       <CategoriesLabel categories={categories} />
-      <Heading fontSize='2xl' mb={4}>
-        {title}
-      </Heading>
+      <Link as={RouterLink} to={`/thread/${id}`}>
+        <Heading fontSize='2xl' mb={4}>
+          {title}
+        </Heading>
+      </Link>
       <Text>
         Lorem ipsum, dolor sit amet consectetur adipisicing elit. Dolor
         voluptate voluptatibus esse amet modi itaque dicta quasi soluta,

@@ -40,7 +40,7 @@ const MyThreads = () => {
 
         querySnapshot.forEach((thread) => {
           const details = {
-            replyID: thread.id,
+            threadID: thread.id,
             categories: thread.data().categories,
             title: thread.data().title,
           };
@@ -108,9 +108,11 @@ const MyThreads = () => {
             <Stack spacing={8} my={8}>
               {myQuestions.length ? (
                 Object.values(myQuestions).map((thread) => {
+                  console.log(thread.threadID);
                   return (
                     <MyQuestionCard
                       key={thread.threadID}
+                      id={thread.threadID}
                       categories={thread.categories}
                       title={thread.title}
                     />

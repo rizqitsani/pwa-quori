@@ -68,6 +68,7 @@ const Home = () => {
                   return (
                     <ThreadCard
                       key={thread.threadID}
+                      id={thread.threadID}
                       categories={thread.categories}
                       createdAt={thread.createdAt}
                       title={thread.title}
