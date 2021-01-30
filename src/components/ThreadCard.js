@@ -89,7 +89,7 @@ const ThreadCard = ({ categories, createdAt, id, title, userName }) => {
       </Link>
       {details.body ? null : (
         <Text fontSize='sm' my={2}>{`Asked by ${userName} · ${dayjs(
-          createdAt.toDate(),
+          createdAt,
         ).fromNow()}`}</Text>
       )}
       <CategoriesLabel categories={categories} />

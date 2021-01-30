@@ -40,7 +40,7 @@ const Home = () => {
           const details = {
             threadID: thread.id,
             categories: thread.data().categories,
-            createdAt: thread.data().createdAt,
+            createdAt: thread.data().createdAt.toDate(),
             title: thread.data().title,
           };
 
