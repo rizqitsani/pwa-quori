@@ -1,3 +1,5 @@
+import { createStandaloneToast } from '@chakra-ui/react';
+
 import {
   ADD_THREAD_FAIL,
   ADD_THREAD_SUCCESS,
@@ -6,6 +8,8 @@ import {
   EDIT_THREAD_FAIL,
   EDIT_THREAD_SUCCESS,
 } from '../actions/types';
+
+const toast = createStandaloneToast();
 
 export const addThread = (threadData) => async (
   dispatch,
@@ -29,6 +33,13 @@ export const addThread = (threadData) => async (
     dispatch({ type: ADD_THREAD_SUCCESS });
   } catch (error) {
     dispatch({ type: ADD_THREAD_FAIL, payload: error });
+    toast({
+      description: error?.message,
+      status: 'error',
+      position: 'bottom-right',
+      duration: 5000,
+      isClosable: true,
+    });
   }
 };
 
@@ -66,6 +77,13 @@ export const editThread = (editedData) => async (
     dispatch({ type: EDIT_THREAD_SUCCESS });
   } catch (error) {
     dispatch({ type: EDIT_THREAD_FAIL, payload: error });
+    toast({
+      description: error?.message,
+      status: 'error',
+      position: 'bottom-right',
+      duration: 5000,
+      isClosable: true,
+    });
   }
 };
 
@@ -91,5 +109,12 @@ export const deleteThread = (threadID) => async (
     dispatch({ type: DELETE_THREAD_SUCCESS });
   } catch (error) {
     dispatch({ type: DELETE_THREAD_FAIL, payload: error });
+    toast({
+      description: error?.message,
+      status: 'error',
+      position: 'bottom-right',
+      duration: 5000,
+      isClosable: true,
+    });
   }
 };

@@ -1,3 +1,5 @@
+import { createStandaloneToast } from '@chakra-ui/react';
+
 import {
   ADD_REPLY_FAIL,
   ADD_REPLY_SUCCESS,
@@ -6,6 +8,8 @@ import {
   EDIT_REPLY_FAIL,
   EDIT_REPLY_SUCCESS,
 } from './types';
+
+const toast = createStandaloneToast();
 
 export const addReply = (replyData) => async (
   dispatch,
@@ -41,6 +45,13 @@ export const addReply = (replyData) => async (
     }
   } catch (error) {
     dispatch({ type: ADD_REPLY_FAIL, payload: error });
+    toast({
+      description: error?.message,
+      status: 'error',
+      position: 'bottom-right',
+      duration: 5000,
+      isClosable: true,
+    });
   }
 };
 
@@ -62,6 +73,13 @@ export const editReply = (editedData) => async (
     dispatch({ type: EDIT_REPLY_SUCCESS });
   } catch (error) {
     dispatch({ type: EDIT_REPLY_FAIL, payload: error });
+    toast({
+      description: error?.message,
+      status: 'error',
+      position: 'bottom-right',
+      duration: 5000,
+      isClosable: true,
+    });
   }
 };
 
@@ -78,5 +96,12 @@ export const deleteReply = (replyID) => async (
     dispatch({ type: DELETE_REPLY_SUCCESS });
   } catch (error) {
     dispatch({ type: DELETE_REPLY_FAIL, payload: error });
+    toast({
+      description: error?.message,
+      status: 'error',
+      position: 'bottom-right',
+      duration: 5000,
+      isClosable: true,
+    });
   }
 };

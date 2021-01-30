@@ -1,3 +1,5 @@
+import { createStandaloneToast } from '@chakra-ui/react';
+
 import {
   SIGN_IN_FAIL,
   SIGN_IN_SUCCESS,
@@ -8,6 +10,8 @@ import {
   UPDATE_PROFILE_FAIL,
   UPDATE_PROFILE_SUCCESS,
 } from '../actions/types';
+
+const toast = createStandaloneToast();
 
 export const signIn = (credentials) => async (
   dispatch,
@@ -24,6 +28,13 @@ export const signIn = (credentials) => async (
     dispatch({ type: SIGN_IN_SUCCESS });
   } catch (error) {
     dispatch({ type: SIGN_IN_FAIL, payload: error });
+    toast({
+      description: error?.message,
+      status: 'error',
+      position: 'bottom-right',
+      duration: 5000,
+      isClosable: true,
+    });
   }
 };
 
@@ -49,6 +60,13 @@ export const signUp = (newUserData) => async (
     dispatch({ type: SIGN_UP_SUCCESS });
   } catch (error) {
     dispatch({ type: SIGN_UP_FAIL, payload: error });
+    toast({
+      description: error?.message,
+      status: 'error',
+      position: 'bottom-right',
+      duration: 5000,
+      isClosable: true,
+    });
   }
 };
 
@@ -61,6 +79,13 @@ export const signOut = () => async (dispatch, getState, { getFirebase }) => {
     dispatch({ type: SIGN_OUT_SUCCESS });
   } catch (error) {
     dispatch({ type: SIGN_OUT_FAIL, payload: error });
+    toast({
+      description: error?.message,
+      status: 'error',
+      position: 'bottom-right',
+      duration: 5000,
+      isClosable: true,
+    });
   }
 };
 
@@ -102,7 +127,21 @@ export const updateProfile = (updatedUserData) => async (
     await Promise.all(promises);
 
     dispatch({ type: UPDATE_PROFILE_SUCCESS });
+    toast({
+      description: 'Profile updated.',
+      status: 'success',
+      position: 'bottom-right',
+      duration: 5000,
+      isClosable: true,
+    });
   } catch (error) {
     dispatch({ type: UPDATE_PROFILE_FAIL, payload: error });
+    toast({
+      description: error?.message,
+      status: 'error',
+      position: 'bottom-right',
+      duration: 5000,
+      isClosable: true,
+    });
   }
 };
