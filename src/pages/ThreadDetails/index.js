@@ -10,6 +10,7 @@ import {
   Grid,
   GridItem,
   Heading,
+  Skeleton,
   Stack,
   Text,
   Textarea,
@@ -33,12 +34,48 @@ const schema = yup.object().shape({
   reply: yup.string().required('This field is required'),
 });
 
+const AnswerForm = ({
+  errors,
+  formState,
+  handleSubmit,
+  isOpen,
+  onSubmit,
+  register,
+}) => {
+  return (
+    <form onSubmit={handleSubmit(onSubmit)}>
+      <FormControl isInvalid={!!errors?.reply?.message} mb={4}>
+        <Textarea
+          name='reply'
+          ref={register}
+          display={{ base: isOpen ? 'block' : 'none' }}
+          placeholder='Write your thoughts here...'
+          size='sm'
+          resize='vertical'
+          mb={4}
+        />
+        <FormErrorMessage>{errors?.reply?.message}</FormErrorMessage>
+      </FormControl>
+      <Button
+        type='submit'
+        isLoading={formState.isSubmitting}
+        display={{ base: isOpen ? 'block' : 'none' }}
+        colorScheme='orange'
+      >
+        Share
+      </Button>
+    </form>
+  );
+};
+
 const ThreadDetails = ({ match }) => {
   const firestore = useFirestore();
 
   const [isOpen, setIsOpen] = useState(false);
   const [details, setDetails] = useState({});
   const [replies, setReplies] = useState([]);
+  const [isLoadingDetails, setIsLoadingDetails] = useState(true);
+  const [isLoadingReplies, setIsLoadingReplies] = useState(true);
 
   const { errors, formState, handleSubmit, register, reset } = useForm({
     mode: 'onSubmit',
@@ -82,7 +119,9 @@ const ThreadDetails = ({ match }) => {
             details.userID = user.id;
             details.userName = user.data().name;
           });
+
           setDetails(details);
+          setIsLoadingDetails(false);
         });
       });
 
@@ -98,11 +137,13 @@ const ThreadDetails = ({ match }) => {
           promises.push(
             firestore.collection('users').doc(reply.data().userID).get(),
           );
+
           const details = {
             replyID: reply.id,
             body: reply.data().body,
             createdAt: reply.data().createdAt,
           };
+
           replyList.push(details);
         });
 
@@ -111,7 +152,9 @@ const ThreadDetails = ({ match }) => {
             replyList[index].userID = user.id;
             replyList[index].userName = user.data().name;
           });
+
           setReplies(replyList);
+          setIsLoadingReplies(false);
         });
       });
 
@@ -129,72 +172,72 @@ const ThreadDetails = ({ match }) => {
       <MainContainer>
         <Grid h='200px' templateColumns='repeat(5, 1fr)' gap={4}>
           <GridItem colStart={{ base: 1, md: 2 }} colEnd={{ base: 6, md: 5 }}>
-            <Heading>{`#${details.title}`}</Heading>
-            <Text mt={4}>{`Asked by ${details.userName} · ${dayjs(
-              details.createdAt,
-            ).fromNow()}`}</Text>
-            {details.userID !== auth.uid ? (
-              <Button
-                onClick={handleAnswerClick}
-                leftIcon={<MdComment />}
-                colorScheme='orange'
-                variant='outline'
-                my={6}
-              >
-                Answer
-              </Button>
-            ) : null}
+            {isLoadingDetails ? (
+              <Stack spacing={4}>
+                <Skeleton height='50px' />
+                <Skeleton height='20px' />
+                <Skeleton height='40px' />
+              </Stack>
+            ) : (
+              <>
+                <Heading>{`#${details.title}`}</Heading>
+                <Text mt={4}>{`Asked by ${details.userName} · ${dayjs(
+                  details.createdAt,
+                ).fromNow()}`}</Text>
+                {details.userID !== auth.uid ? (
+                  <Button
+                    onClick={handleAnswerClick}
+                    leftIcon={<MdComment />}
+                    colorScheme='orange'
+                    variant='outline'
+                    my={6}
+                  >
+                    Answer
+                  </Button>
+                ) : null}
+              </>
+            )}
 
-            <form onSubmit={handleSubmit(onSubmit)}>
-              <FormControl isInvalid={!!errors?.reply?.message} mb={4}>
-                <Textarea
-                  name='reply'
-                  ref={register}
-                  display={{ base: isOpen ? 'block' : 'none' }}
-                  placeholder='Write your thoughts here...'
-                  size='sm'
-                  resize='vertical'
-                  mb={4}
-                />
-                <FormErrorMessage>{errors?.reply?.message}</FormErrorMessage>
-              </FormControl>
-              <Button
-                type='submit'
-                isLoading={formState.isSubmitting}
-                display={{ base: isOpen ? 'block' : 'none' }}
-                colorScheme='orange'
-              >
-                Share
-              </Button>
-            </form>
+            <AnswerForm
+              errors={errors}
+              formState={formState}
+              handleSubmit={handleSubmit}
+              isOpen={isOpen}
+              onSubmit={onSubmit}
+              register={register}
+            />
             <Divider my={4} />
-            {replies.length > 0 ? (
+            {isLoadingReplies ? (
+              <Skeleton height='30px' />
+            ) : replies.length > 0 ? (
               <Text fontSize='lg' fontWeight='bold'>
                 {`${replies.length} Thoughts`}
               </Text>
             ) : null}
-            <Text fontSize='lg' fontWeight='bold'></Text>
-            <Stack spacing={8} my={8}>
-              {replies.length > 0 ? (
-                Object.values(replies).map((reply) => {
-                  return (
-                    <AnswerCard
-                      key={reply.replyID}
-                      id={reply.replyID}
-                      body={reply.body}
-                      createdAt={reply.createdAt}
-                      userID={reply.userID}
-                      userName={reply.userName}
-                    />
-                  );
-                })
-              ) : (
-                <Alert status='info'>
-                  <AlertIcon />
-                  Nobody have shared their thoughts on this!
-                </Alert>
-              )}
-            </Stack>
+
+            <Skeleton isLoaded={!isLoadingReplies}>
+              <Stack spacing={8} my={8}>
+                {replies.length > 0 ? (
+                  Object.values(replies).map((reply) => {
+                    return (
+                      <AnswerCard
+                        key={reply.replyID}
+                        id={reply.replyID}
+                        body={reply.body}
+                        createdAt={reply.createdAt}
+                        userID={reply.userID}
+                        userName={reply.userName}
+                      />
+                    );
+                  })
+                ) : (
+                  <Alert status='info'>
+                    <AlertIcon />
+                    Nobody have shared their thoughts on this!
+                  </Alert>
+                )}
+              </Stack>
+            </Skeleton>
           </GridItem>
           <GridItem colSpan={1}></GridItem>
         </Grid>

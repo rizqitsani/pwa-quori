@@ -36,6 +36,58 @@ const schema = yup.object().shape({
   title: yup.string().required('This field is required'),
 });
 
+const EditForm = ({
+  categories,
+  errors,
+  formState,
+  handleSubmit,
+  onCloseDelete,
+  onSubmit,
+  register,
+  title,
+}) => {
+  return (
+    <form onSubmit={handleSubmit(onSubmit)}>
+      <FormControl isInvalid={!!errors?.title?.message} mb={4}>
+        <Input
+          type='text'
+          name='title'
+          defaultValue={title}
+          placeholder='Start it with "What", "Why", "How", etc.'
+          ref={register}
+          autoComplete='off'
+        />
+        <FormErrorMessage>{errors?.title?.message}</FormErrorMessage>
+      </FormControl>
+      <FormControl isInvalid={!!errors?.category?.message}>
+        <Select
+          name='category'
+          defaultValue={categories[0]}
+          ref={register}
+          placeholder='Select a category...'
+        >
+          <option value='Web Development'>Web Development</option>
+          <option value='Android Development'>Android Development</option>
+          <option value='Front End'>Front End</option>
+          <option value='Back End'>Back End</option>
+          <option value='Other'>Other</option>
+        </Select>
+        <FormErrorMessage>{errors?.category?.message}</FormErrorMessage>
+      </FormControl>
+      <Button
+        type='submit'
+        disabled={!!errors.title}
+        isLoading={formState.isSubmitting}
+        colorScheme='orange'
+        onClick={onCloseDelete}
+        my={4}
+      >
+        Edit
+      </Button>
+    </form>
+  );
+};
+
 const MyQuestionCard = ({ categories, id, title }) => {
   const [isEditing, setIsEditing] = useState(false);
   const [isOpenDelete, setIsOpenDelete] = useState(false);
@@ -83,11 +135,19 @@ const MyQuestionCard = ({ categories, id, title }) => {
   return (
     <>
       <Box bg={cardBg} borderRadius='md' p={6} shadow='base'>
-        <Flex
-          direction={isEditing ? 'row' : 'column'}
-          justify={isEditing ? 'space-between' : 'space-between'}
-        >
+        <Flex direction={isEditing ? 'column' : 'row'} justify='space-between'>
           {isEditing ? (
+            <EditForm
+              categories={categories}
+              errors={errors}
+              formState={formState}
+              handleSubmit={handleSubmit}
+              onCloseDelete={onCloseDelete}
+              onSubmit={onSubmit}
+              register={register}
+              title={title}
+            />
+          ) : (
             <Box>
               <Link as={RouterLink} to={`/thread/${id}`}>
                 <Heading fontSize='2xl' mb={4}>
@@ -98,47 +158,6 @@ const MyQuestionCard = ({ categories, id, title }) => {
                 <CategoriesLabel categories={categories} mb={0} />
               ) : null}
             </Box>
-          ) : (
-            <form onSubmit={handleSubmit(onSubmit)}>
-              <FormControl isInvalid={!!errors?.title?.message} mb={4}>
-                <Input
-                  type='text'
-                  name='title'
-                  defaultValue={title}
-                  placeholder='Start it with "What", "Why", "How", etc.'
-                  ref={register}
-                  autoComplete='off'
-                />
-                <FormErrorMessage>{errors?.title?.message}</FormErrorMessage>
-              </FormControl>
-              <FormControl isInvalid={!!errors?.category?.message}>
-                <Select
-                  name='category'
-                  defaultValue={categories[0]}
-                  ref={register}
-                  placeholder='Select a category...'
-                >
-                  <option value='Web Development'>Web Development</option>
-                  <option value='Android Development'>
-                    Android Development
-                  </option>
-                  <option value='Front End'>Front End</option>
-                  <option value='Back End'>Back End</option>
-                  <option value='Other'>Other</option>
-                </Select>
-                <FormErrorMessage>{errors?.category?.message}</FormErrorMessage>
-              </FormControl>
-              <Button
-                type='submit'
-                disabled={!!errors.title}
-                isLoading={formState.isSubmitting}
-                colorScheme='orange'
-                onClick={onCloseDelete}
-                my={4}
-              >
-                Edit
-              </Button>
-            </form>
           )}
           <Box mt={isEditing ? 0 : 4}>
             <IconButton

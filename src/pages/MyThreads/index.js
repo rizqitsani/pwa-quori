@@ -6,6 +6,7 @@ import {
   Grid,
   GridItem,
   Heading,
+  Skeleton,
   Stack,
   Text,
 } from '@chakra-ui/react';
@@ -26,6 +27,8 @@ const MyThreads = () => {
 
   const [myQuestions, setMyQuestions] = useState([]);
   const [myAnswers, setMyAnswers] = useState([]);
+  const [isLoadingQuestions, setIsLoadingQuestions] = useState(true);
+  const [isLoadingAnswers, setIsLoadingAnswers] = useState(true);
 
   const firebase = useSelector((state) => state.firebase);
   const { auth } = firebase;
@@ -48,6 +51,7 @@ const MyThreads = () => {
         });
 
         setMyQuestions(threadList);
+        setIsLoadingQuestions(false);
       });
 
     const getAnswers = firestore
@@ -75,7 +79,9 @@ const MyThreads = () => {
             replyList[index].categories = thread.data().categories;
             replyList[index].title = thread.data().title;
           });
+
           setMyAnswers(replyList);
+          setIsLoadingAnswers(false);
         });
       });
 
@@ -98,45 +104,49 @@ const MyThreads = () => {
           </GridItem>
           <GridItem colSpan={{ base: 5, md: 3 }}>
             <Heading>#I'm curious about</Heading>
-            <Stack spacing={8} my={8}>
-              {myQuestions.length ? (
-                Object.values(myQuestions).map((thread) => {
-                  return (
-                    <MyQuestionCard
-                      key={thread.threadID}
-                      id={thread.threadID}
-                      categories={thread.categories}
-                      title={thread.title}
-                    />
-                  );
-                })
-              ) : (
-                <Alert status='info'>
-                  <AlertIcon />
-                  You haven't asked any questions!
-                </Alert>
-              )}
-            </Stack>
+            <Skeleton isLoaded={!isLoadingAnswers && !isLoadingQuestions}>
+              <Stack spacing={8} my={8}>
+                {myQuestions.length ? (
+                  Object.values(myQuestions).map((thread) => {
+                    return (
+                      <MyQuestionCard
+                        key={thread.threadID}
+                        id={thread.threadID}
+                        categories={thread.categories}
+                        title={thread.title}
+                      />
+                    );
+                  })
+                ) : (
+                  <Alert status='info'>
+                    <AlertIcon />
+                    You haven't asked any questions!
+                  </Alert>
+                )}
+              </Stack>
+            </Skeleton>
             <Heading>#My Thoughts</Heading>
-            <Stack spacing={8} my={8}>
-              {myAnswers.length ? (
-                Object.values(myAnswers).map((reply) => {
-                  return (
-                    <MyAnswerCard
-                      key={reply.replyID}
-                      body={reply.body}
-                      categories={reply.categories}
-                      title={reply.title}
-                    />
-                  );
-                })
-              ) : (
-                <Alert status='info'>
-                  <AlertIcon />
-                  You haven't share your thoughts to others!
-                </Alert>
-              )}
-            </Stack>
+            <Skeleton isLoaded={!isLoadingAnswers && !isLoadingQuestions}>
+              <Stack spacing={8} my={8}>
+                {myAnswers.length ? (
+                  Object.values(myAnswers).map((reply) => {
+                    return (
+                      <MyAnswerCard
+                        key={reply.replyID}
+                        body={reply.body}
+                        categories={reply.categories}
+                        title={reply.title}
+                      />
+                    );
+                  })
+                ) : (
+                  <Alert status='info'>
+                    <AlertIcon />
+                    You haven't share your thoughts to others!
+                  </Alert>
+                )}
+              </Stack>
+            </Skeleton>
           </GridItem>
           <GridItem colSpan={1} />
         </Grid>
