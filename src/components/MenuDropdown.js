@@ -25,7 +25,7 @@ import { MdPerson } from 'react-icons/md';
 import { Link as RouterLink } from 'react-router-dom';
 
 import { useDispatch, useSelector } from 'react-redux';
-import { signOut } from '../store/actions/authActions';
+import { deleteProfile, signOut } from '../store/actions/authActions';
 
 const MenuDropdown = () => {
   const [isOpen, setIsOpen] = useState(false);
@@ -49,7 +49,7 @@ const MenuDropdown = () => {
   const onOpen = () => setIsOpen(true);
 
   const onSubmit = (event) => {
-    console.log(confirmValue);
+    dispatch(deleteProfile());
     event.preventDefault();
     setConfirmValue('');
     onClose();

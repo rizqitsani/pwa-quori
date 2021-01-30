@@ -1,6 +1,8 @@
 import { createStandaloneToast } from '@chakra-ui/react';
 
 import {
+  DELETE_PROFILE_FAIL,
+  DELETE_PROFILE_SUCCESS,
   SIGN_IN_FAIL,
   SIGN_IN_SUCCESS,
   SIGN_OUT_FAIL,
@@ -136,6 +138,52 @@ export const updateProfile = (updatedUserData) => async (
     });
   } catch (error) {
     dispatch({ type: UPDATE_PROFILE_FAIL, payload: error });
+    toast({
+      description: error?.message,
+      status: 'error',
+      position: 'bottom-right',
+      duration: 5000,
+      isClosable: true,
+    });
+  }
+};
+
+export const deleteProfile = () => async (
+  dispatch,
+  getState,
+  { getFirebase, getFirestore },
+) => {
+  try {
+    const firebase = getFirebase();
+    const firestore = getFirestore();
+
+    const { uid: currentUserID } = getState().firebase.auth;
+
+    await firestore.collection('users').doc(currentUserID).delete();
+
+    const deletedThread = firestore
+      .collection('threads')
+      .where('userID', '==', currentUserID);
+
+    const threadSnapShots = await deletedThread.get();
+    threadSnapShots.forEach((doc) => {
+      doc.ref.delete();
+    });
+
+    const deletedReplies = firestore
+      .collection('replies')
+      .where('userID', '==', currentUserID);
+
+    const replySnapShots = await deletedReplies.get();
+    replySnapShots.forEach((doc) => {
+      doc.ref.delete();
+    });
+
+    await firebase.auth().currentUser.delete();
+
+    dispatch({ type: DELETE_PROFILE_SUCCESS });
+  } catch (error) {
+    dispatch({ type: DELETE_PROFILE_FAIL, payload: error });
     toast({
       description: error?.message,
       status: 'error',
