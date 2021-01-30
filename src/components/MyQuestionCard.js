@@ -125,6 +125,7 @@ const MyQuestionCard = ({ categories, id, title }) => {
       dispatch(editThread({ ...formValue, threadID: id }));
 
     setIsOpenEdit(false);
+    setIsEditing(false);
   };
 
   const onSubmit = (editedData) => {
