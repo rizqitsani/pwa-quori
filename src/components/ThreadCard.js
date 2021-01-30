@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { useEffect, useState } from 'react';
 
 import {
   Avatar,
@@ -12,48 +12,77 @@ import {
 
 import { Link as RouterLink } from 'react-router-dom';
 
+import { useFirestore } from 'react-redux-firebase';
+
 import dayjs from 'dayjs';
 import relativeTime from 'dayjs/plugin/relativeTime';
 
 import CategoriesLabel from './CategoriesLabel';
 
-const ThreadCard = ({ categories, createdAt, id, title, userName }) => {
+const ThreadCard = ({ categories, id, title }) => {
+  const firestore = useFirestore();
+
+  const [details, setDetails] = useState({});
+
   const cardBg = useColorModeValue('gray.100', 'gray.700');
 
+  useEffect(() => {
+    const getLatestReply = firestore
+      .collection('replies')
+      .where('threadID', '==', id)
+      .orderBy('createdAt', 'desc')
+      .limit(1)
+      .onSnapshot((querySnapshot) => {
+        const replyDetails = {};
+        const promises = [];
+
+        querySnapshot.forEach((reply) => {
+          promises.push(
+            firestore.collection('users').doc(reply.data().userID).get(),
+          );
+
+          replyDetails.replyID = reply.id;
+          replyDetails.body = reply.data().body;
+          replyDetails.createdAt = reply.data().createdAt.toDate();
+        });
+
+        Promise.all(promises).then((snapshot) => {
+          snapshot.forEach((user) => {
+            replyDetails.userName = user.data().name;
+          });
+
+          setDetails(replyDetails);
+        });
+      });
+
+    return () => {
+      getLatestReply();
+    };
+  }, [firestore, id]);
+
   dayjs.extend(relativeTime);
-  const formattedTime = dayjs(createdAt.toDate()).fromNow();
+  const formattedTime = dayjs(details.createdAt).fromNow();
 
   return (
     <Box bg={cardBg} borderRadius='md' p={{ base: 6, md: 10 }} shadow='base'>
-      <Flex align='center' mb={4}>
-        <Avatar name={userName} mr={3} />
-        <Flex direction='column'>
-          <Text fontSize='md' fontWeight='bold'>
-            {userName}
-          </Text>
-          <Text fontSize='xs'>{formattedTime}</Text>
+      {details.body ? (
+        <Flex align='center' mb={4}>
+          <Avatar name={details.userName} mr={3} />
+          <Flex direction='column'>
+            <Text fontSize='md' fontWeight='bold'>
+              {details.userName}
+            </Text>
+            <Text fontSize='xs'>{formattedTime}</Text>
+          </Flex>
         </Flex>
-      </Flex>
+      ) : null}
       <Link as={RouterLink} to={`/thread/${id}`}>
         <Heading fontSize='2xl' mb={4}>
           {title}
         </Heading>
       </Link>
       <CategoriesLabel categories={categories} />
-      <Text>
-        Lorem ipsum, dolor sit amet consectetur adipisicing elit. Dolor
-        voluptate voluptatibus esse amet modi itaque dicta quasi soluta,
-        necessitatibus sapiente beatae autem, ullam ex laudantium eligendi
-        veritatis animi exercitationem quos consectetur? Tenetur, esse adipisci
-        sapiente ex ab magni earum deserunt, facere, magnam modi omnis tempora
-        aperiam ipsa voluptatum eaque nisi inventore numquam nesciunt. Pariatur
-        officia porro, iure qui soluta doloribus perferendis similique in non,
-        tempora cum? Eligendi provident ab, cupiditate debitis fuga magnam a
-        reprehenderit perferendis voluptatibus vitae? Culpa voluptas accusantium
-        cum quisquam delectus autem eaque doloribus doloremque repellendus
-        temporibus, maiores repellat quidem quo assumenda praesentium quia nulla
-        beatae consectetur.
-      </Text>
+      {details.body ? <Text>{details.body}</Text> : null}
     </Box>
   );
 };
