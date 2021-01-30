@@ -32,6 +32,13 @@ export const addReply = (replyData) => async (
         type: ADD_REPLY_FAIL,
         payload: { message: `You've answered this thread before!` },
       });
+      toast({
+        description: `You've answered this thread before!`,
+        status: 'error',
+        position: 'bottom-right',
+        duration: 5000,
+        isClosable: true,
+      });
       return;
     } else {
       await firestore.collection('replies').doc(`${uid}_${threadID}`).set({
