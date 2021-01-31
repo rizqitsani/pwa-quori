@@ -78,7 +78,7 @@ const ThreadCard = ({ categories, createdAt, id, title, userName }) => {
             <Text fontSize='md' fontWeight='bold'>
               {details.userName}
             </Text>
-            <Text fontSize='xs'>{formattedTime}</Text>
+            <Text fontSize='xs'>{`Answered ${formattedTime}`}</Text>
           </Flex>
         </Flex>
       ) : null}
