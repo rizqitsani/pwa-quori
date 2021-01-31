@@ -1,7 +1,7 @@
 const self = this;
 
-const staticCacheName = 'site-static-v1';
-const dynamicCacheName = 'site-dynamic-v1';
+const staticCacheName = 'site-static-v2';
+const dynamicCacheName = 'site-dynamic-v2';
 const assets = [
   '/',
   '/index.html',
@@ -23,7 +23,6 @@ const limitCacheSize = (name, size) => {
 self.addEventListener('install', (evt) => {
   evt.waitUntil(
     caches.open(staticCacheName).then((cache) => {
-      console.log('caching shell assets');
       cache.addAll(assets);
     }),
   );
