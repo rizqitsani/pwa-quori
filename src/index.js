@@ -12,6 +12,8 @@ import firebase from './config/firebase';
 import { ReactReduxFirebaseProvider } from 'react-redux-firebase';
 import { createFirestoreInstance } from 'redux-firestore';
 
+import theme from './theme';
+
 import * as serviceWorker from './serviceWorker';
 
 const rrfConfig = {
@@ -28,9 +30,9 @@ const rrfProps = {
 
 ReactDOM.render(
   <StrictMode>
+    <ColorModeScript initialColorMode={theme.config.initialColorMode} />
     <Provider store={store}>
       <ReactReduxFirebaseProvider {...rrfProps}>
-        <ColorModeScript />
         <App />
       </ReactReduxFirebaseProvider>
     </Provider>
