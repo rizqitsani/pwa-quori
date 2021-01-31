@@ -7,6 +7,7 @@ import MenuItem from './MenuItem';
 const SignedInLinks = () => {
   return (
     <>
+      <MenuItem to='/'>Home</MenuItem>
       <MenuItem to='/mythreads'>My Threads</MenuItem>
       <AddThreadModal />
       <MenuDropdown />
