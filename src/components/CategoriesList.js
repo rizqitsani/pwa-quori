@@ -19,6 +19,9 @@ const CategoriesList = () => {
       <ListItem>
         <CategoriesTag title='Back End' to='back-end' />
       </ListItem>
+      <ListItem>
+        <CategoriesTag title='Other' to='other' />
+      </ListItem>
     </List>
   );
 };

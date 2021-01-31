@@ -18,7 +18,7 @@ import {
   ThreadCard,
 } from '../../components';
 
-const Categories = (props) => {
+const Categories = ({ match }) => {
   const firestore = useFirestore();
 
   const [threads, setThreads] = useState([]);
@@ -26,7 +26,7 @@ const Categories = (props) => {
 
   let title = '';
 
-  switch (props.match.params.name) {
+  switch (match.params.name) {
     case 'web-development':
       title = 'Web Development';
       break;
@@ -38,6 +38,9 @@ const Categories = (props) => {
       break;
     case 'back-end':
       title = 'Back End';
+      break;
+    case 'other':
+      title = 'Other';
       break;
     default:
       title = '';

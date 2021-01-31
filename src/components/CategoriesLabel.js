@@ -20,6 +20,9 @@ const CategoriesLabel = ({ categories, ...props }) => {
           case 'Back End':
             color = 'pink';
             break;
+          case 'Other':
+            color = 'purple';
+            break;
           default:
             break;
         }

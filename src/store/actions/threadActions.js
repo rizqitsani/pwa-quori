@@ -21,7 +21,10 @@ export const addThread = (threadData) => async (
 
     const { uid } = getState().firebase.auth;
 
-    const { title, category } = threadData;
+    const { title } = threadData;
+
+    let { category } = threadData;
+    if (category === '') category = 'Other';
 
     await firestore.collection('threads').add({
       title: title,
@@ -53,7 +56,10 @@ export const editThread = (editedData) => async (
 
     const { uid } = getState().firebase.auth;
 
-    const { category, threadID, title } = editedData;
+    const { threadID, title } = editedData;
+
+    let { category } = editedData;
+    if (category === '') category = 'Other';
 
     await firestore
       .collection('threads')
